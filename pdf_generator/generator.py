@@ -1,19 +1,19 @@
 import jinja2, pdfkit, datetime, os
 
-base_path = os.path.abspath(".").replace("\\", "/")
-qr_path = f"file:///{base_path}/qr.png"
-badge_path = f"file:///{base_path}/badge.png"
+base_path           = os.path.abspath(".").replace("\\", "/")
+qr_path             = f"file:///{base_path}/qr.png"
+badge_path          = f"file:///{base_path}/badge.png"
 output_file_name    = "output.pdf"
 template_file_name  = "template.html"
 template_file_path  = "./"
 pdfkit_exe_path     = "C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe"
 
 context = {
-    "name"          : "Sudev Dahitule",
-    "workshop_name" : "Python in 2 Hours",
+    "name"          : "Smit Doshi",
+    "workshop_name" : "Python in 24 Hours",
     "date"          : datetime.date.today().strftime("%B %d, %Y"),
     "qr_path"       : qr_path,
-    "badge_path"    : badge_path
+    "badge_path"    : badge_path,
 }
 
 template_loader = jinja2.FileSystemLoader(template_file_path)

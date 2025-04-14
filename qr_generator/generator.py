@@ -1,6 +1,6 @@
 import qrcode
 
-qrcode_text      = "Yo! This is a QR🤯"
+qrcode_text      = "yo yoy o"
 output_file_name = "output.png"
 fill_color       = "#000000" # black
 back_color       = "#ffffff" # white
