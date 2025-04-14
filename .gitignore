@@ -1,4 +1,5 @@
 Idea.png
 backend_django/backend_django/__pycache__
 backend_django/pdf_generator_app/__pycache__
+backend_django/pdf_generator_app/migrations
 backend_django/db.sqlite3
