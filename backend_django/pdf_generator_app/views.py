@@ -1,8 +1,8 @@
-from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from .pdf_generator.generator import get_pdf_file
+from .qr_generator.generator import generate_qr
 
 demo_qr_path = "file:///C:/Users/Sudev/Desktop/Sudev D/DJ/Python/Python Mini Project/backend_django/pdf_generator_app/pdf_generator/demo_qr.png"
 
@@ -70,6 +70,8 @@ def send_emails(request):
             attendees = body_data["attendees"]
 
             # save data in database
+            
+
             # generate QR imgs
             # generate pdfs using QRs
             # send emails
