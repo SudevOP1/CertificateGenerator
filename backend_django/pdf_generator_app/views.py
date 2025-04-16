@@ -5,10 +5,7 @@ import json, os
 from PIL import Image
 from .pdf_generator.generator import get_pdf_file
 
-def get_demo_qr_png():
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    qr_path = os.path.join(current_dir, "pdf_generator", "demo_qr.png")
-    return Image.open(qr_path)
+demo_qr_path = "file:///C:/Users/Sudev/Desktop/Sudev D/DJ/Python/Python Mini Project/backend_django/pdf_generator_app/pdf_generator/demo_qr.png"
 
 @csrf_exempt
 def get_demo_certificate(request):
@@ -36,7 +33,7 @@ def get_demo_certificate(request):
                 organizer_name=organizer_name,
                 workshop_name=workshop_name,
                 date=date,
-                qr=get_demo_qr_png(),
+                qr=demo_qr_path,
                 attendee_name=attendee["name"],
                 attendee_email=attendee["email"]
             )
