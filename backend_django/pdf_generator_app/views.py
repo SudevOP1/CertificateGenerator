@@ -1,8 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-import json, os
-from PIL import Image
+import json
 from .pdf_generator.generator import get_pdf_file
 
 demo_qr_path = "file:///C:/Users/Sudev/Desktop/Sudev D/DJ/Python/Python Mini Project/backend_django/pdf_generator_app/pdf_generator/demo_qr.png"
@@ -50,18 +49,37 @@ def get_demo_certificate(request):
 
 # TODO
 def send_emails(request):
+    """
+    POST body = {
+        "organizer_name": "Smit Doshi",
+        "workshop_name": "Python in 69 Hours",
+        "date": "dd-mm-yyyy",
+        "attendees": [
+            {"name": "Sahad Mithani", "email": "sahadmithani@gmail.com"},
+            {"name": "Sudev Dahitule", "email": "sudevdahitule@gmail.com"}
+        ]
+    }
+    """
     if request.method == "POST":
         try:
-            # Parse JSON data from the request body
-            data = json.loads(request.body)
-            # Process the data (just an example response)
-            response_data = {
-                "received": data,
-                "message": "POST request received successfully",
-                "status": "success"
-            }
-            return JsonResponse(response_data, status=201)
-        except json.JSONDecodeError:
-            return JsonResponse({"message": "Invalid JSON"}, status=400)
+            # extract data from body
+            body_data = json.loads(request.body)
+            organizer_name = body_data["organizer_name"]
+            workshop_name = body_data["workshop_name"]
+            date = body_data["date"]
+            attendees = body_data["attendees"]
 
-    return JsonResponse({"message": "Only POST requests are allowed"}, status=405)
+            # save data in database
+            # generate QR imgs
+            # generate pdfs using QRs
+            # send emails
+            # if error, remove data from database
+
+            return JsonResponse({"message": "success"}, status=200)
+        except Exception as e:
+            return JsonResponse({"message": "something went wrong", "error": str(e)}, status=400)
+    return JsonResponse({"message": "Only POST requests allowed"}, status=405)
+
+#TODO
+def get_certificate(request):
+    return JsonResponse({"message": "To be done"})

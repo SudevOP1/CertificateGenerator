@@ -1,18 +1,28 @@
-import qrcode
+import qrcode, os
 
-qrcode_text      = "yo yoy o"
-output_file_name = "output.png"
-fill_color       = "#000000" # black
-back_color       = "#ffffff" # white
+outputs_folder_name = "outputs"
 
-qr_creater = qrcode.QRCode(
-    version=1,
-    error_correction=qrcode.constants.ERROR_CORRECT_M,
-    box_size=10,
-    border=0,
-)
-qr_creater.add_data(qrcode_text)
-qr_creater.make(fit=True)
-img = qr_creater.make_image(fill_color=fill_color, back_color=back_color)
+def generate_qr(text, output_file_name, fill_color="#000000", back_color="#ffffff"):
 
-img.save(output_file_name)
+    # create outputs folder if not present
+    output_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), outputs_folder_name)
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    output_path = os.path.join(output_dir, output_file_name)
+
+    qr_creator = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_M,
+        box_size=10,
+        border=0,
+    )
+    qr_creator.add_data(text)
+    qr_creator.make(fit=True)
+    img = qr_creator.make_image(fill_color=fill_color, back_color=back_color)
+
+    img.save(output_path)
+    return output_path
+
+if __name__ == "__main__":
+    generate_qr(text="yea boiiiiiiiiii", output_file_name="demo.png")
