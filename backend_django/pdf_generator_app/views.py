@@ -1,13 +1,14 @@
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-import json
+import json, os
 from PIL import Image
-from pdf_generator.generator import get_pdf_file
+from .pdf_generator.generator import get_pdf_file
 
-def get_demo_qr(): return Image.open("./pdf_generator/demo_qr.png")
-
-def get_qr():       return "yo" # TODO
+def get_demo_qr_png():
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    qr_path = os.path.join(current_dir, "pdf_generator", "demo_qr.png")
+    return Image.open(qr_path)
 
 @csrf_exempt
 def get_demo_certificate(request):
@@ -29,13 +30,13 @@ def get_demo_certificate(request):
             workshop_name = body_data["workshop_name"]
             date = body_data["date"]
             attendees = body_data["attendees"]
-
             attendee = attendees[0]
+
             pdf_base64 = get_pdf_file(
                 organizer_name=organizer_name,
                 workshop_name=workshop_name,
                 date=date,
-                qr="demo_qr.png",
+                qr=get_demo_qr_png(),
                 attendee_name=attendee["name"],
                 attendee_email=attendee["email"]
             )
@@ -50,7 +51,8 @@ def get_demo_certificate(request):
             return JsonResponse({"message": "something went wrong", "error": str(e)}, status=400)
     return JsonResponse({"message": "Only POST requests allowed"}, status=405)
 
-def send_emails(request): # TODO
+# TODO
+def send_emails(request):
     if request.method == "POST":
         try:
             # Parse JSON data from the request body
