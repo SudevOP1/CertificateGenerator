@@ -14,12 +14,12 @@ website_url = "http://127.0.0.1:8000"
 def get_demo_certificate(request):
     """
     POST body = {
-        "organizer_name": "Smit Doshi",
-        "workshop_name": "Python in 69 Hours",
+        "organizer_name": "Sudev Dahitule111",
+        "workshop_name": "Python in 69 Hours111",
         "date": "yyyy-dd-mm",
         "attendees": [
             {"name": "Sahad Mithani", "email": "sahadmithani@gmail.com"},
-            {"name": "Sudev Dahitule", "email": "sudevdahitule@gmail.com"}
+            {"name": "Smit Doshi", "email": "smitdoshi205@gmail.com"}
         ]
     }
     """
@@ -55,17 +55,17 @@ def get_demo_certificate(request):
 def send_emails(request):
     """
     POST body = {
-        "organizer_name": "Sudev Dahitule",
-        "workshop_name": "Python in 69 Hours",
+        "organizer_name": "Sudev Dahitule111",
+        "workshop_name": "Python in 69 Hours111",
         "date": "yyyy-dd-mm",
         "attendees": [
             {"name": "Sahad Mithani", "email": "sahadmithani@gmail.com"},
             {"name": "Smit Doshi", "email": "smitdoshi205@gmail.com"}
         ],
-        "sender_email": "example@gmail.com",
-        "sender_email_password": "StrongPassword@123",
-        "email_subject": "Python in 69 Hours Workshop Certificate",
-        "email_body": "Thank you very much for attending our workshop.\nPlease find the certificate attached.\nThank You"
+        "sender_email": "sudevdahitule06@gmail.com",
+        "sender_email_password": "abcd abcd abcd abcd",
+        "email_subject": "Python in 69 Hours Workshop Certificate111",
+        "email_body": "Thank you very much for attending our workshop.\nPlease find the certificate attached.\nThank You111"
     }
     """
     if request.method == "POST":
