@@ -1,9 +1,10 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-import json, os
+import json, os, smtplib, base64
 from .pdf_generator.generator import get_pdf_file
 from .qr_generator.generator import generate_qr
 from .models import *
+from email.message import EmailMessage
 
 demo_qr_path = "file:///C:/Users/Sudev/Desktop/Sudev D/DJ/Python/Python Mini Project/backend_django/pdf_generator_app/pdf_generator/demo_qr.png"
 website_url = "http://127.0.0.1:8000"
@@ -49,18 +50,21 @@ def get_demo_certificate(request):
             return JsonResponse({"message": "something went wrong", "error": str(e)}, status=400)
     return JsonResponse({"message": "Only POST requests allowed"}, status=405)
 
-# TODO
 @csrf_exempt
 def send_emails(request):
     """
     POST body = {
-        "organizer_name": "Smit Doshi",
+        "organizer_name": "Sudev Dahitule",
         "workshop_name": "Python in 69 Hours",
-        "date": "dd-mm-yyyy",
+        "date": "yyyy-dd-mm",
         "attendees": [
             {"name": "Sahad Mithani", "email": "sahadmithani@gmail.com"},
-            {"name": "Sudev Dahitule", "email": "sudevdahitule@gmail.com"}
-        ]
+            {"name": "Smit Doshi", "email": "smitdoshi205@gmail.com"}
+        ],
+        "sender_email": "example@gmail.com",
+        "sender_email_password": "StrongPassword@123",
+        "email_subject": "Python in 69 Hours Workshop Certificate",
+        "email_body": "Thank you very much for attending our workshop.\nPlease find the certificate attached.\nThank You"
     }
     """
     if request.method == "POST":
@@ -70,6 +74,10 @@ def send_emails(request):
             organizer_name = body_data["organizer_name"]
             workshop_name = body_data["workshop_name"]
             date = body_data["date"]
+            sender_email = body_data["sender_email"]
+            sender_email_password = body_data["sender_email_password"]
+            email_subject = body_data["email_subject"]
+            email_body = body_data["email_body"]
             attendees = body_data["attendees"]
 
             # save data in database
@@ -112,13 +120,46 @@ def send_emails(request):
                 )
                 base64_encoded_pdfs[attendee_obj.id] = pdf_base64
 
-            # send emails TODO From Here
-            # delete QR imgs
-            # if error, remove data from database
+            # send emails
+            for attendee_obj in new_attendee_objs:
+                pdf_base64 = base64_encoded_pdfs[attendee_obj.id]
+                pdf_bytes = base64.b64decode(pdf_base64)
 
-            return JsonResponse({"message": "success", "pdfs": base64_encoded_pdfs}, status=200)
+                msg = EmailMessage()
+                msg['Subject'] = email_subject
+                msg['From'] = sender_email
+                msg['To'] = attendee_obj.email
+                msg.set_content(email_body)
+
+                # Add attachment
+                msg.add_attachment(
+                    pdf_bytes,
+                    maintype='application',
+                    subtype='pdf',
+                    filename=f"{attendee_obj.name}_certificate.pdf"
+                )
+
+                # Send email using Gmail SMTP
+                with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+                    smtp.login(sender_email, sender_email_password)
+                    smtp.send_message(msg)
+            new_workshop_obj.emails_sent = True
+
+            return JsonResponse({"message": "success"}, status=200)
+        
+        # if error, remove data from database
         except Exception as e:
+            if 'new_workshop_obj' in locals():
+                new_workshop_obj.delete()
             return JsonResponse({"message": "something went wrong", "error": str(e)}, status=400)
+        
+        # delete QR imgs
+        finally:
+            if "qr_paths" in locals():
+                for path in qr_paths.values():
+                    if os.path.exists(path):
+                        os.remove(path)
+        
     return JsonResponse({"message": "Only POST requests allowed"}, status=405)
 
 #TODO
