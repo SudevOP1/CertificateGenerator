@@ -13,7 +13,7 @@ urlpatterns = [
         name="send_emails"
     ),
     path(
-        "get-certificate/",
+        "get-certificate/<int:id>",
         get_certificate,
         name="get_certificate"
     ),

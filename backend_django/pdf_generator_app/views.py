@@ -6,8 +6,9 @@ from .qr_generator.generator import generate_qr
 from .models import *
 from email.message import EmailMessage
 
-demo_qr_path = "file:///C:/Users/Sudev/Desktop/Sudev D/DJ/Python/Python Mini Project/backend_django/pdf_generator_app/pdf_generator/demo_qr.png"
+demo_qr_path = f"file:///C{os.path.dirname(os.path.abspath(__file__)).replace("\\", "/")[1:]}/pdf_generator/demo_qr.png"
 website_url = "http://127.0.0.1:8000"
+
 
 @csrf_exempt
 def get_demo_certificate(request):
@@ -15,7 +16,7 @@ def get_demo_certificate(request):
     POST body = {
         "organizer_name": "Smit Doshi",
         "workshop_name": "Python in 69 Hours",
-        "date": "dd-mm-yyyy",
+        "date": "yyyy-dd-mm",
         "attendees": [
             {"name": "Sahad Mithani", "email": "sahadmithani@gmail.com"},
             {"name": "Sudev Dahitule", "email": "sudevdahitule@gmail.com"}
@@ -163,5 +164,5 @@ def send_emails(request):
     return JsonResponse({"message": "Only POST requests allowed"}, status=405)
 
 #TODO
-def get_certificate(request):
+def get_certificate(request, id):
     return JsonResponse({"message": "To be done"})
