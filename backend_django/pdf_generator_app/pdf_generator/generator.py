@@ -30,3 +30,33 @@ def get_pdf_file(organizer_name, workshop_name, date, qr, attendee_name, attende
     # encoding pdf:
     encoded_pdf = base64.b64encode(pdf_bytes).decode('utf-8')
     return encoded_pdf
+
+if __name__ == "__main__":
+
+    # Sample demo data
+    organizer_name = "Smit Doshi"
+    workshop_name = "Python in 69 Hours"
+    date = "2025-01-25"
+    attendee_name = "John Doe"
+    attendee_email = "johndoe@example.com"
+    
+    sample_qr_filename = "demo_qr.png"
+    qr_path = f"file:///{os.path.join(base_path, sample_qr_filename).replace(os.sep, '/')}"
+
+    # Generate base64 PDF
+    encoded_pdf = get_pdf_file(
+        organizer_name=organizer_name,
+        workshop_name=workshop_name,
+        date=date,
+        qr=qr_path,
+        attendee_name=attendee_name,
+        attendee_email=attendee_email,
+    )
+
+    # Decode and save as output.pdf
+    pdf_bytes = base64.b64decode(encoded_pdf)
+    output_path = os.path.join(base_path, "output.pdf")
+    with open(output_path, "wb") as f:
+        f.write(pdf_bytes)
+
+    # print(f"PDF saved to {output_path}")

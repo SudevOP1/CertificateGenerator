@@ -3,5 +3,6 @@ backend_django/db.sqlite3
 backend_django/backend_django/__pycache__
 backend_django/pdf_generator_app/migrations
 backend_django/pdf_generator_app/__pycache__
-backend_django/pdf_generator_app/qr_generator/__pycache__
 backend_django/pdf_generator_app/pdf_generator/__pycache__
+backend_django/pdf_generator_app/qr_generator/__pycache__
+backend_django/pdf_generator_app/qr_generator/outputs/*
