@@ -164,5 +164,43 @@ def send_emails(request):
     return JsonResponse({"message": "Only POST requests allowed"}, status=405)
 
 #TODO
-def get_certificate(request, id):
-    return JsonResponse({"message": "To be done"})
+@csrf_exempt
+def get_certificate(request):
+    """
+    POST body = {
+        "attendee_id": "24"
+    }
+    """
+    if request.method == "POST":
+        try:
+            # extract attendee_id from body
+            attendee_id = json.loads(request.body)["attendee_id"]
+            attendee_obj = Attendee.objects.get(id=attendee_id)
+            workshop_obj = attendee_obj.workshop_id
+
+            # generate QR img and save path
+            certificate_url = website_url + f"/certificate/{attendee_id}"
+            qr_filename = f"output_{attendee_id}.png"
+            qr_output_path = generate_qr(text=certificate_url, output_file_name=qr_filename)
+            
+            # generate pdf using saved QR path
+            qr_uri_path = f"file:///{qr_output_path.replace(os.sep, '/')}"
+            pdf_base64 = get_pdf_file(
+                organizer_name = workshop_obj.organizer_name,
+                workshop_name  = workshop_obj.workshop_name,
+                date           = str(workshop_obj.date),
+                qr             = qr_uri_path,
+                attendee_name  = attendee_obj.name,
+                attendee_email = attendee_obj.email,
+            )
+            return JsonResponse({"message": "success", "pdf_base64": pdf_base64}, status=200)
+        
+        except Exception as e:
+            return JsonResponse({"message": "something went wrong", "error": str(e)}, status=400)
+        
+        # delete QR img
+        finally:
+            if "qr_output_path" in locals() and os.path.exists(qr_output_path):
+                os.remove(qr_output_path)
+        
+    return JsonResponse({"message": "Only POST requests allowed"}, status=405)
