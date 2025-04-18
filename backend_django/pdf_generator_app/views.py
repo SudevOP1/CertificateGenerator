@@ -193,7 +193,11 @@ def get_certificate(request):
                 attendee_name  = attendee_obj.name,
                 attendee_email = attendee_obj.email,
             )
-            return JsonResponse({"message": "success", "pdf_base64": pdf_base64}, status=200)
+            return JsonResponse({
+                "message": "success",
+                "certificate": pdf_base64,
+                "type": "base64-pdf"
+            }, status=200)
         
         except Exception as e:
             return JsonResponse({"message": "something went wrong", "error": str(e)}, status=400)
