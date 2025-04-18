@@ -284,6 +284,22 @@
             background: rgba(0, 0, 0, 0.5);
             z-index: 999;
         }
+
+        .delete-attendee {
+            width: fit-content;
+            height: fit-content;
+            margin-left: 10px;
+            padding: 6px 10px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .delete-attendee:hover {
+            background-color: #c0392b;
+        }
     </style>
 </head>
 
@@ -350,10 +366,12 @@
                         emails on your behalf.</p>
                     <p><strong>Steps:</strong></p>
                     <ol>
-                        <li style="font-size: 15px;">Make sure 2-Step Verification is turned ON on your Gmail Account.</li>
+                        <li style="font-size: 15px;">Make sure 2-Step Verification is turned ON on your Gmail Account.
+                        </li>
                         <li style="font-size: 15px;">Go to <a href="https://myaccount.google.com/security"
                                 target="_blank">https://myaccount.google.com/security</a></li>
-                        <li style="font-size: 15px;">Generate an app password called <strong>"Workshop Email Sender"</strong>.</li>
+                        <li style="font-size: 15px;">Generate an app password called <strong>"Workshop Email
+                                Sender"</strong>.</li>
                         <li style="font-size: 15px;">Google will generate a secure 16-digit password.</li>
                         <li style="font-size: 15px;">Copy this password and paste it here as it is.</li>
                     </ol>
@@ -399,7 +417,9 @@
                             <input id="email1" type="email" value="sahadmithani@gmail.com" class="form-control">
                         </div>
                     </div>
+                    <button class="delete-attendee">Delete</button>
                 </div>
+
                 <div class="attendee-row">
                     <div class="attendee-col">
                         <div class="form-group">
@@ -413,8 +433,10 @@
                             <input id="email2" type="email" value="sudevdahitule@gmail.com" class="form-control">
                         </div>
                     </div>
+                    <button class="delete-attendee">Delete</button>
                 </div>
             </div>
+
 
             <button class="add-attendee" id="addAttendee">
                 <i class="fas fa-plus-circle"></i> Add Another Attendee
@@ -481,9 +503,18 @@
                         <input id="email${countRows + 1}" type="email" class="form-control">
                     </div>
                 </div>
+                <button class="delete-attendee">Delete</button>
             `;
 
             container.appendChild(newRow);
+        });
+
+        // delete attendee
+        document.getElementById('attendees-container').addEventListener('click', function (e) {
+            if (e.target && e.target.classList.contains('delete-attendee')) {
+                const row = e.target.closest('.attendee-row');
+                if (row) row.remove();
+            }
         });
 
         function checkDemo() {
