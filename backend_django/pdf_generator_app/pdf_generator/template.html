@@ -1,130 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Certificate</title>
-     <style>
-        @page {
-            margin: 0;
-        }
+    <style>
         body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        .certificate-container {
+            width: 800px;
+            height: 550px;
+            position: relative;
+        }
+
+        .certificate {
             width: 100%;
             height: 100%;
-            padding: 2rem;
             box-sizing: border-box;
-            font-family: sans-serif;
-            text-align: center;
-            background: linear-gradient(to bottom right, #f9f9f9, #f0f0f0);
-            color: #333;
-            margin: 0;
+            border-radius: 20px;
+            padding: 40px;
+            background-color: white;
+            background-image: url("./bg_img.png");
+            background-position: center;
+            background-size: cover;
+            position: relative;
+            overflow: hidden;
         }
-        .certificate {
-            border: 15px solid #4A90E2;
-            border-image: linear-gradient(45deg, #4A90E2, #6AACF4, #4A90E2) 1;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-            padding: 4rem;
-            height: 90%;
-            background-color: #fdfdfd;
+
+        .content {
+            position: relative;
+            z-index: 1;
+            height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-        }
-        .certificate::before {
-            content: '';
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            right: 12px;
-            bottom: 12px;
-            border: 1px solid #e0e0e0;
-            pointer-events: none;
-        }
-        .title h1 {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
-            color: #4A90E2;
-            letter-spacing: 4px;
-            text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
-        }
-        .title h3 {
-            font-size: 1.5rem;
-            color: #555;
-            font-style: italic;
-        }
-        .recipient {
-            margin: 2rem 0;
-        }
-        .recipient h3 {
-            font-size: 1.5rem;
-            margin: 0.5rem 0;
-            color: #555;
-            font-weight: normal;
-        }
-        .recipient h2 {
-            font-size: 2.5rem;
-            margin: 1rem 0;
-            color: #333;
-            display: inline-block;
-            border-bottom: 2px solid #4A90E2;
-            padding: 0 2rem 0.5rem;
-        }
-        .details h3 {
-            font-size: 1.5rem;
-            margin: 0.3rem 0;
-            color: #555;
-        }
-        .footer {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
             align-items: center;
-            margin-top: 2rem;
-            position: relative;
+            justify-content: space-between;
         }
-        .footer::before {
-            content: '';
-            position: absolute;
-            top: -20px;
-            left: 20%;
-            right: 20%;
-            height: 1px;
-            background: linear-gradient(to right, transparent, #ccc, transparent);
+
+        .header {
+            text-align: center;
+            margin-bottom: 0px;
         }
-        .footer img {
-            height: 80px;
-            max-width: 100px; /* add this */
-            width: auto;
+
+        .title {
+            color: #007bff;
+            font-size: 48px;
+            font-weight: bold;
+            margin: 0;
+            letter-spacing: 2px;
         }
-        .footer .date {
-            font-size: 1.2rem;
-            font-style: italic;
-            color: #666;
+
+        .subtitle {
+            font-size: 24px;
+            margin: 0;
+            font-weight: bold;
         }
-     </style>
+
+        .body {
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .awarded-text {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .recipient-name {
+            color: #007bff;
+            font-size: 42px;
+            font-weight: bold;
+            margin: 20px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #007bff;
+            display: inline-block;
+        }
+
+        .participation-text {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        .workshop-name {
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .footer {
+            width: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            margin-bottom: 10px;
+            gap: 200px;
+        }
+
+        .qr-code {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .badge {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 30px;
+        }
+
+        .date {
+            width: 150px;
+            height: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: right;
+            border-top: 2px solid black;
+            overflow: visible;
+            display: flex;
+            margin-top: 20px;
+        }
+    </style>
 </head>
+
 <body>
-    <div class="certificate">
-        
-        <div class="title">
-            <h1>CERTIFICATE</h1>
-            <h3>of Participation</h3>
-        </div>
-        
-        <div class="recipient">
-            <h3>This certificate is awarded to</h3>
-            <h2>{{ attendee_name }}</h2>
-            <div class="details">
-                <h3>for his/her active participation in</h3>
-                <h3>{{ workshop_name }}</h3>
+    <div class="certificate-container">
+        <div class="certificate">
+            <div class="background-pattern"></div>
+            <div class="content">
+                <div class="header">
+                    <h1 class="title">CERTIFICATE</h1>
+                    <h2 class="subtitle">Of Participation</h2>
+                </div>
+
+                <div class="body">
+                    <div class="awarded-text">This Certificate is Awarded to</div>
+                    <div class="recipient-name">Vivian Lobo</div>
+                    <div class="participation-text">
+                        for his/her active participation in
+                        <span class="workshop-name">Workshop Name</span>
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <div class="qr-code">
+                        <img style="width: 100px;" class="qr-symbol" src="./demo_qr.png" />
+                    </div>
+
+                    <div class="badge">
+                        <img style="width: 100px;" src="./badge.png" />
+                    </div>
+
+                    <div class="date">January 1, 2025</div>
+                </div>
             </div>
-        </div>
-        
-        <div class="footer">
-            <img src="{{ qr_path }}" alt="QR Code">
-            <div class="date">{{ date }}</div>
-            <img src="{{ badge_path }}" alt="Badge">
         </div>
     </div>
 </body>
+
 </html>
