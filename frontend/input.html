@@ -1,587 +1,683 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Certificate Generator</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <style>
-        :root {
-            --primary-bg: #04041B;
-            --secondary-bg: #370048;
-            --card-bg: #1b0033;
-            --input-bg: #4a0057;
-            --accent-dark: rgba(247, 40, 106, 1);
-            --accent-light: rgba(255, 247, 187, 1);
-            --text: #ffffff;
-            --shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      :root {
+        --primary-bg: #04041b;
+        --secondary-bg: #370048;
+        --card-bg: #1b0033;
+        --input-bg: #4a0057;
+        --accent-dark: rgba(247, 40, 106, 1);
+        --accent-light: rgba(255, 247, 187, 1);
+        --text: #ffffff;
+        --shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        transition: all 0.3s ease;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(
+          135deg,
+          var(--primary-bg),
+          var(--secondary-bg)
+        );
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+      }
+
+      .container {
+        width: 90%;
+        margin: 0px auto;
+        background-color: var(--card-bg);
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: var(--shadow);
+        animation: fadeIn 0.5s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            transition: all 0.3s ease;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      h1 {
+        color: var(--accent-dark);
+        /* Fallback */
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 32px;
+        font-weight: 700;
+        text-shadow: 0 2px 10px rgba(255, 46, 154, 0.3);
+        animation: colorPulse 3s ease-in-out infinite;
+      }
+
+      /* Define the animation */
+      @keyframes colorPulse {
+        0% {
+          color: #ff1493;
+          /* Deep Pink */
+          text-shadow: 0 2px 10px rgba(255, 20, 147, 0.4);
         }
 
-        body {
-            background: linear-gradient(135deg, var(--primary-bg), var(--secondary-bg));
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 20px;
+        50% {
+          color: rgb(255, 72, 0);
+          /* Light Pink */
+          text-shadow: 0 2px 15px rgba(206, 1, 110, 0.4);
         }
 
-        .container {
-            width: 90%;
-            margin: 0px auto;
-            background-color: var(--card-bg);
-            border-radius: 24px;
-            padding: 40px;
-            box-shadow: var(--shadow);
-            animation: fadeIn 0.5s ease;
+        100% {
+          color: #ff1493;
+          /* Deep Pink again */
+          text-shadow: 0 2px 10px rgba(255, 20, 147, 0.4);
         }
+      }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
+      .section-title {
+        color: var(--accent-dark);
+        font-size: 20px;
+        margin-top: 25px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+      .section-title i {
+        font-size: 18px;
+      }
 
-        h1 {
-            color: var(--accent-dark);
-            /* Fallback */
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 32px;
-            font-weight: 700;
-            text-shadow: 0 2px 10px rgba(255, 46, 154, 0.3);
-            animation: colorPulse 3s ease-in-out infinite;
-        }
+      .divider {
+        height: 3px;
+        background: linear-gradient(to right, var(--accent-dark), transparent);
+        margin-bottom: 20px;
+        border-radius: 2px;
+      }
 
-        /* Define the animation */
-        @keyframes colorPulse {
-            0% {
-                color: #ff1493;
-                /* Deep Pink */
-                text-shadow: 0 2px 10px rgba(255, 20, 147, 0.4);
-            }
+      .form-group {
+        margin-bottom: 18px;
+        position: relative;
+      }
 
-            50% {
-                color: rgb(255, 72, 0);
-                /* Light Pink */
-                text-shadow: 0 2px 15px rgba(206, 1, 110, 0.4);
-            }
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        font-size: 14px;
+        color: var(--accent-light);
+      }
 
-            100% {
-                color: #ff1493;
-                /* Deep Pink again */
-                text-shadow: 0 2px 10px rgba(255, 20, 147, 0.4);
-            }
-        }
+      .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border-radius: 12px;
+        border: 2px solid transparent;
+        background-color: var(--input-bg);
+        color: var(--text);
+        font-size: 15px;
+        outline: none;
+      }
 
+      .form-control:focus {
+        border-color: var(--accent-light);
+        box-shadow: 0 0 0 3px rgba(255, 46, 154, 0.2);
+      }
 
-        .section-title {
-            color: var(--accent-dark);
-            font-size: 20px;
-            margin-top: 25px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+      .input-with-icon {
+        position: relative;
+      }
 
-        .section-title i {
-            font-size: 18px;
-        }
+      .input-with-icon i {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--accent-light);
+        cursor: pointer;
+      }
 
-        .divider {
-            height: 3px;
-            background: linear-gradient(to right, var(--accent-dark), transparent);
-            margin-bottom: 20px;
-            border-radius: 2px;
-        }
+      .attendee-row {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
 
-        .form-group {
-            margin-bottom: 18px;
-            position: relative;
-        }
+      .attendee-col {
+        flex: 1;
+      }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            font-size: 14px;
-            color: var(--accent-light);
-        }
+      .btn {
+        width: 100%;
+        padding: 14px;
+        font-size: 16px;
+        font-weight: 600;
+        border: none;
+        border-radius: 50px;
+        background-color: var(--accent-dark);
+        color: var(--text);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        box-shadow: 0 4px 15px rgba(255, 46, 154, 0.3);
+        margin-bottom: 15px;
+      }
 
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border-radius: 12px;
-            border: 2px solid transparent;
-            background-color: var(--input-bg);
-            color: var(--text);
-            font-size: 15px;
-            outline: none;
-        }
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 46, 154, 0.4);
+      }
 
-        .form-control:focus {
-            border-color: var(--accent-light);
-            box-shadow: 0 0 0 3px rgba(255, 46, 154, 0.2);
-        }
+      .btn:active {
+        transform: translateY(0);
+      }
 
-        .input-with-icon {
-            position: relative;
-        }
+      .add-attendee {
+        background-color: transparent;
+        border: 2px dashed var(--accent-light);
+        color: var(--accent-light);
+        padding: 10px;
+        width: 100%;
+        border-radius: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-        .input-with-icon i {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--accent-light);
-            cursor: pointer;
-        }
+      .add-attendee:hover {
+        background-color: rgba(255, 46, 154, 0.1);
+      }
 
-        .attendee-row {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
+      .btn-group {
+        margin-top: 30px;
+      }
 
-        .attendee-col {
-            flex: 1;
-        }
+      .tooltip {
+        position: relative;
+        display: inline-block;
+      }
 
-        .btn {
-            width: 100%;
-            padding: 14px;
-            font-size: 16px;
-            font-weight: 600;
-            border: none;
-            border-radius: 50px;
-            background-color: var(--accent-dark);
-            color: var(--text);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            box-shadow: 0 4px 15px rgba(255, 46, 154, 0.3);
-            margin-bottom: 15px;
-        }
+      .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: var(--primary-bg);
+        color: var(--text);
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -60px;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 46, 154, 0.4);
-        }
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+      }
 
-        .btn:active {
-            transform: translateY(0);
-        }
+      .info-modal {
+        display: none;
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -20%);
+        background-color: #000000;
+        border: 1px solid #ccc;
+        padding: 30px 50px;
+        width: 400px;
+        max-width: 90%;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+        border-radius: 10px;
+      }
 
-        .add-attendee {
-            background-color: transparent;
-            border: 2px dashed var(--accent-light);
-            color: var(--accent-light);
-            padding: 10px;
-            width: 100%;
-            border-radius: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+      .info-modal p {
+        margin-bottom: 10px;
+        font-size: 14px;
+        line-height: 1.4;
+        display: flex;
+        flex-direction: column;
+      }
 
-        .add-attendee:hover {
-            background-color: rgba(255, 46, 154, 0.1);
-        }
+      .info-modal .close-btn {
+        background-color: #f44336;
+        color: rgb(255, 255, 255);
+        border: none;
+        padding: 6px 12px;
+        cursor: pointer;
+        border-radius: 4px;
+        margin-left: 90%;
+        margin-bottom: 20px;
+      }
 
-        .btn-group {
-            margin-top: 30px;
-        }
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+      }
 
-        .tooltip {
-            position: relative;
-            display: inline-block;
-        }
+      .delete-attendee {
+        width: fit-content;
+        height: fit-content;
+        margin-left: 10px;
+        padding: 6px 10px;
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
 
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 120px;
-            background-color: var(--primary-bg);
-            color: var(--text);
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -60px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .info-modal {
-            display: none;
-            position: fixed;
-            top: 20%;
-            left: 50%;
-            transform: translate(-50%, -20%);
-            background-color: #000000;
-            border: 1px solid #ccc;
-            padding: 30px 50px;
-            width: 400px;
-            max-width: 90%;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            border-radius: 10px;
-        }
-
-        .info-modal p {
-            margin-bottom: 10px;
-            font-size: 14px;
-            line-height: 1.4;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .info-modal .close-btn {
-            background-color: #f44336;
-            color: rgb(255, 255, 255);
-            border: none;
-            padding: 6px 12px;
-            cursor: pointer;
-            border-radius: 4px;
-            margin-left: 90%;
-            margin-bottom: 20px;
-        }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-        }
-
-        .delete-attendee {
-            width: fit-content;
-            height: fit-content;
-            margin-left: 10px;
-            padding: 6px 10px;
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .delete-attendee:hover {
-            background-color: #c0392b;
-        }
+      .delete-attendee:hover {
+        background-color: #c0392b;
+      }
     </style>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <div>
-        <h1>
-            Certificate Generator
-        </h1>
+      <h1>Certificate Generator</h1>
 
-        <div
-            style="width:80%; margin: 0px auto; display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+      <div
+        style="
+          width: 80%;
+          margin: 0px auto;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-bottom: 20px;
+        "
+      >
+        <h2 style="font-weight: 300; margin-bottom: 10px">
+          Say goodbye to manual certificate creation.
+        </h2>
+        <h3 style="font-weight: 300; text-align: center; color: #b6b6b6">
+          Our Certificate Generator helps organizers create professional,
+          personalized certificates for every attendee—in just a few clicks.
+        </h3>
+      </div>
 
-            <h2 style="font-weight: 300; margin-bottom: 10px;">Say goodbye to manual certificate creation.</h2>
-            <h3 style="font-weight: 300; text-align: center; color:#b6b6b6;">Our Certificate Generator helps organizers
-                create professional, personalized certificates for every attendee—in just a few clicks.</h3>
+      <div class="container">
+        <!-- Event Details -->
+        <div class="section-title">
+          <i class="fas fa-calendar-alt"></i>
+          Event Details
+        </div>
+        <div class="divider"></div>
+
+        <div class="form-group">
+          <label for="organizer">Organizer</label>
+          <input
+            id="organizer"
+            type="text"
+            class="form-control"
+            placeholder="Organizer's Name"
+          />
         </div>
 
-        <div class="container">
-
-            <!-- Event Details -->
-            <div class="section-title">
-                <i class="fas fa-calendar-alt"></i>
-                Event Details
-            </div>
-            <div class="divider"></div>
-
-            <div class="form-group">
-                <label for="organizer">Organizer</label>
-                <input id="organizer" type="text" value="Smit Pawar" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label for="workshop">Workshop Name</label>
-                <input id="workshop" type="text" value="Python in 69 Hours" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label for="date">Date</label>
-                <div class="input-with-icon">
-                    <input id="date" type="date" value="2025-01-20" class="form-control">
-                    <i class="fas fa-calendar"></i>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="email">Sender Email</label>
-                <input id="email" type="email" value="smitpawar@gmail.com" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <div style="display:flex; align-items: flex-start; gap: 10px;">
-                    <label for="password">App Password</label>
-                    <i class="fa fa-info-circle" aria-hidden="true" id="infoBtn" style="cursor: pointer;"></i>
-                </div>
-
-                <div class="modal-overlay" id="modalOverlay"></div>
-
-                <!-- Info Modal -->
-                <div class="info-modal" id="infoModal">
-                    <button class="close-btn" id="closeBtn">Close</button>
-                    <p>To send emails automatically from the backend, you’ll need to use an App Password instead of your
-                        regular Gmail password. This keeps your account secure while allowing automated services to send
-                        emails on your behalf.</p>
-                    <p><strong>Steps:</strong></p>
-                    <ol>
-                        <li style="font-size: 15px;">Make sure 2-Step Verification is turned ON on your Gmail Account.
-                        </li>
-                        <li style="font-size: 15px;">Go to <a href="https://myaccount.google.com/security"
-                                target="_blank">https://myaccount.google.com/security</a></li>
-                        <li style="font-size: 15px;">Generate an app password called <strong>"Workshop Email
-                                Sender"</strong>.</li>
-                        <li style="font-size: 15px;">Google will generate a secure 16-digit password.</li>
-                        <li style="font-size: 15px;">Copy this password and paste it here as it is.</li>
-                    </ol>
-                </div>
-
-                <div class="input-with-icon">
-                    <input id="password" type="password" value="password123" class="form-control">
-                    <i class="fas fa-eye" id="togglePassword"></i>
-                </div>
-            </div>
-
-
-
-            <div class="form-group">
-                <label for="subject">Subject</label>
-                <input id="subject" type="text" placeholder="Subject of the email" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label for="body">Body</label>
-                <textarea id="body" rows="3" placeholder="This will contain the body of the email."
-                    class="form-control"></textarea>
-            </div>
-
-            <!-- Attendee Details -->
-            <div class="section-title">
-                <i class="fas fa-users"></i>
-                Attendee Details
-            </div>
-            <div class="divider"></div>
-
-            <div id="attendees-container">
-                <div class="attendee-row">
-                    <div class="attendee-col">
-                        <div class="form-group">
-                            <label>Attendee Name</label>
-                            <input id="name1" type="text" value="Sahad Mithani" class="form-control">
-                        </div>
-                    </div>
-                    <div class="attendee-col">
-                        <div class="form-group">
-                            <label>Attendee Email</label>
-                            <input id="email1" type="email" value="sahadmithani@gmail.com" class="form-control">
-                        </div>
-                    </div>
-                    <button class="delete-attendee">Delete</button>
-                </div>
-
-                <div class="attendee-row">
-                    <div class="attendee-col">
-                        <div class="form-group">
-                            <label>Attendee Name</label>
-                            <input id="name2" type="text" value="Sudev Dahitule" class="form-control">
-                        </div>
-                    </div>
-                    <div class="attendee-col">
-                        <div class="form-group">
-                            <label>Attendee Email</label>
-                            <input id="email2" type="email" value="sudevdahitule@gmail.com" class="form-control">
-                        </div>
-                    </div>
-                    <button class="delete-attendee">Delete</button>
-                </div>
-            </div>
-
-
-            <button class="add-attendee" id="addAttendee">
-                <i class="fas fa-plus-circle"></i> Add Another Attendee
-            </button>
-
-            <!-- Buttons -->
-            <div class="btn-group">
-                <button onclick="checkDemo()" class="btn">
-                    <i class="fas fa-eye"></i> Check Demo Certificate
-                </button>
-                <button onclick="sendCertificates()" class="btn">
-                    <i class="fas fa-paper-plane"></i> Send Certificates to Attendee Emails
-                </button>
-            </div>
+        <div class="form-group">
+          <label for="workshop">Workshop Name</label>
+          <input
+            id="workshop"
+            type="text"
+            class="form-control"
+            placeholder="Workshop Name"
+          />
         </div>
+
+        <div class="form-group">
+          <label for="date">Date</label>
+          <div class="input-with-icon">
+            <input
+              id="date"
+              type="date"
+              class="form-control"
+            />
+            <i class="fas fa-calendar"></i>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Sender Email</label>
+          <input
+            id="email"
+            type="email"
+            class="form-control"
+            placeholder="sender@gmail.com"
+          />
+        </div>
+
+        <div class="form-group">
+          <div style="display: flex; align-items: flex-start; gap: 10px">
+            <label for="password">App Password</label>
+            <i
+              class="fa fa-info-circle"
+              aria-hidden="true"
+              id="infoBtn"
+              style="cursor: pointer"
+              placeholder="abcd abcd abcd abcd"
+            ></i>
+          </div>
+
+          <div class="modal-overlay" id="modalOverlay"></div>
+
+          <!-- Info Modal -->
+          <div class="info-modal" id="infoModal">
+            <button class="close-btn" id="closeBtn">Close</button>
+            <p>
+              To send emails automatically from the backend, you’ll need to use
+              an App Password instead of your regular Gmail password. This keeps
+              your account secure while allowing automated services to send
+              emails on your behalf.
+            </p>
+            <p><strong>Steps:</strong></p>
+            <ol>
+              <li style="font-size: 15px">
+                Make sure 2-Step Verification is turned ON on your Gmail
+                Account.
+              </li>
+              <li style="font-size: 15px">
+                Go to
+                <a href="https://myaccount.google.com/security" target="_blank"
+                  >https://myaccount.google.com/security</a
+                >
+              </li>
+              <li style="font-size: 15px">
+                Generate an app password called
+                <strong>"Workshop Email Sender"</strong>.
+              </li>
+              <li style="font-size: 15px">
+                Google will generate a secure 16-digit password.
+              </li>
+              <li style="font-size: 15px">
+                Copy this password and paste it here as it is.
+              </li>
+            </ol>
+          </div>
+
+          <div class="input-with-icon">
+            <input
+              id="password"
+              type="password"
+              class="form-control"
+            />
+            <i class="fas fa-eye" id="togglePassword"></i>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="subject">Subject</label>
+          <input
+            id="subject"
+            type="text"
+            placeholder="Subject of the email"
+            class="form-control"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="body">Body</label>
+          <textarea
+            id="body"
+            rows="3"
+            placeholder="This will contain the body of the email."
+            class="form-control"
+          ></textarea>
+        </div>
+
+        <!-- Attendee Details -->
+        <div class="section-title">
+          <i class="fas fa-users"></i>
+          Attendee Details
+        </div>
+        <div class="divider"></div>
+
+        <div id="attendees-container">
+          <div class="attendee-row">
+            <div class="attendee-col">
+              <div class="form-group">
+                <label>Attendee Name</label>
+                <input
+                  id="name1"
+                  type="text"
+                  class="form-control"
+                  placeholder="Attendee's Name"
+                />
+              </div>
+            </div>
+            <div class="attendee-col">
+              <div class="form-group">
+                <label>Attendee Email</label>
+                <input
+                  id="email1"
+                  type="email"
+                  class="form-control"
+                  placeholder="attendee@example.com"
+                />
+              </div>
+            </div>
+            <button class="delete-attendee">Delete</button>
+          </div>
+
+          <div class="attendee-row">
+            <div class="attendee-col">
+              <div class="form-group">
+                <label>Attendee Name</label>
+                <input
+                  id="name2"
+                  type="text"
+                  class="form-control"
+                  placeholder="Attendee's Name"
+                />
+              </div>
+            </div>
+            <div class="attendee-col">
+              <div class="form-group">
+                <label>Attendee Email</label>
+                <input
+                  id="email2"
+                  type="email"
+                  class="form-control"
+                  placeholder="attendee@example.com"
+                />
+              </div>
+            </div>
+            <button class="delete-attendee">Delete</button>
+          </div>
+        </div>
+
+        <button class="add-attendee" id="addAttendee">
+          <i class="fas fa-plus-circle"></i> Add Another Attendee
+        </button>
+
+        <!-- Buttons -->
+        <div class="btn-group">
+          <button onclick="checkDemo()" class="btn">
+            <i class="fas fa-eye"></i> Check Demo Certificate
+          </button>
+          <button onclick="sendCertificates()" class="btn">
+            <i class="fas fa-paper-plane"></i> Send Certificates to Attendee
+            Emails
+          </button>
+        </div>
+      </div>
     </div>
 
     <script>
-        const infoBtn = document.getElementById('infoBtn');
-        const infoModal = document.getElementById('infoModal');
-        const modalOverlay = document.getElementById('modalOverlay');
-        const closeBtn = document.getElementById('closeBtn');
+      const infoBtn = document.getElementById("infoBtn");
+      const infoModal = document.getElementById("infoModal");
+      const modalOverlay = document.getElementById("modalOverlay");
+      const closeBtn = document.getElementById("closeBtn");
 
-        infoBtn.addEventListener('click', () => {
-            infoModal.style.display = 'block';
-            modalOverlay.style.display = 'block';
+      infoBtn.addEventListener("click", () => {
+        infoModal.style.display = "block";
+        modalOverlay.style.display = "block";
+      });
+
+      closeBtn.addEventListener("click", () => {
+        infoModal.style.display = "none";
+        modalOverlay.style.display = "none";
+      });
+
+      modalOverlay.addEventListener("click", () => {
+        infoModal.style.display = "none";
+        modalOverlay.style.display = "none";
+      });
+      // Toggle password visibility
+      document
+        .getElementById("togglePassword")
+        .addEventListener("click", function () {
+          const passwordInput = document.getElementById("password");
+          const type =
+            passwordInput.getAttribute("type") === "password"
+              ? "text"
+              : "password";
+          passwordInput.setAttribute("type", type);
+          this.classList.toggle("fa-eye");
+          this.classList.toggle("fa-eye-slash");
         });
 
-        closeBtn.addEventListener('click', () => {
-            infoModal.style.display = 'none';
-            modalOverlay.style.display = 'none';
-        });
+      // Add new attendee row
+      document
+        .getElementById("addAttendee")
+        .addEventListener("click", function () {
+          const container = document.getElementById("attendees-container");
+          const countRows =
+            container.getElementsByClassName("attendee-row").length;
+          const newRow = document.createElement("div");
+          newRow.className = "attendee-row";
 
-        modalOverlay.addEventListener('click', () => {
-            infoModal.style.display = 'none';
-            modalOverlay.style.display = 'none';
-        });
-        // Toggle password visibility
-        document.getElementById('togglePassword').addEventListener('click', function () {
-            const passwordInput = document.getElementById('password');
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            this.classList.toggle('fa-eye');
-            this.classList.toggle('fa-eye-slash');
-        });
-
-        // Add new attendee row
-        document.getElementById('addAttendee').addEventListener('click', function () {
-            const container = document.getElementById('attendees-container');
-            const countRows = container.getElementsByClassName('attendee-row').length;
-            const newRow = document.createElement('div');
-            newRow.className = 'attendee-row';
-
-            newRow.innerHTML = `
+          newRow.innerHTML = `
                 <div class="attendee-col">
                     <div class="form-group">
                         <label>Attendee Name</label>
-                        <input id="name${countRows + 1}" type="text" class="form-control">
+                        <input id="name${
+                          countRows + 1
+                        }" type="text" class="form-control" placeholder="Attendee's Name">
                     </div>
                 </div>
                 <div class="attendee-col">
                     <div class="form-group">
                         <label>Attendee Email</label>
-                        <input id="email${countRows + 1}" type="email" class="form-control">
+                        <input id="email${
+                          countRows + 1
+                        }" type="email" class="form-control" placeholder="attendee@example.com">
                     </div>
                 </div>
                 <button class="delete-attendee">Delete</button>
             `;
 
-            container.appendChild(newRow);
+          container.appendChild(newRow);
         });
 
-        // delete attendee
-        document.getElementById('attendees-container').addEventListener('click', function (e) {
-            if (e.target && e.target.classList.contains('delete-attendee')) {
-                const row = e.target.closest('.attendee-row');
-                if (row) row.remove();
-            }
+      // delete attendee
+      document
+        .getElementById("attendees-container")
+        .addEventListener("click", function (e) {
+          if (e.target && e.target.classList.contains("delete-attendee")) {
+            const row = e.target.closest(".attendee-row");
+            if (row) row.remove();
+          }
         });
 
-        function checkDemo() {
-            const data = getFormData();
-            console.log("Demo Certificate Preview:", data);
-            showNotification("Demo Certificate Data logged to console!");
+      function checkDemo() {
+        const data = getFormData();
+        console.log("Demo Certificate Preview:", data);
+        showNotification("Demo Certificate Data logged to console!");
+      }
+
+      function sendCertificates() {
+        const data = getFormData();
+        console.log("Sending Certificates with Data:", data);
+        showNotification("Certificates are being sent to attendees!");
+      }
+
+      function getFormData() {
+        const container = document.getElementById("attendees-container");
+        const rows = container.getElementsByClassName("attendee-row");
+        const attendees = [];
+
+        for (let i = 0; i < rows.length; i++) {
+          const nameInput = document.getElementById(`name${i + 1}`);
+          const emailInput = document.getElementById(`email${i + 1}`);
+
+          if (nameInput && emailInput && nameInput.value && emailInput.value) {
+            attendees.push({
+              name: nameInput.value,
+              email: emailInput.value,
+            });
+          }
         }
 
-        function sendCertificates() {
-            const data = getFormData();
-            console.log("Sending Certificates with Data:", data);
-            showNotification("Certificates are being sent to attendees!");
-        }
+        return {
+          organizer: document.getElementById("organizer").value,
+          workshop: document.getElementById("workshop").value,
+          date: document.getElementById("date").value,
+          senderEmail: document.getElementById("email").value,
+          password: document.getElementById("password").value,
+          subject: document.getElementById("subject").value,
+          body: document.getElementById("body").value,
+          attendees: attendees,
+        };
+      }
 
-        function getFormData() {
-            const container = document.getElementById('attendees-container');
-            const rows = container.getElementsByClassName('attendee-row');
-            const attendees = [];
+      function showNotification(message) {
+        const notification = document.createElement("div");
+        notification.style.position = "fixed";
+        notification.style.bottom = "20px";
+        notification.style.left = "50%";
+        notification.style.transform = "translateX(-50%)";
+        notification.style.backgroundColor = "var(--accent-light)";
+        notification.style.color = "white";
+        notification.style.padding = "15px 25px";
+        notification.style.borderRadius = "50px";
+        notification.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.3)";
+        notification.style.zIndex = "1000";
+        notification.textContent = message;
 
-            for (let i = 0; i < rows.length; i++) {
-                const nameInput = document.getElementById(`name${i + 1}`);
-                const emailInput = document.getElementById(`email${i + 1}`);
+        document.body.appendChild(notification);
 
-                if (nameInput && emailInput && nameInput.value && emailInput.value) {
-                    attendees.push({
-                        name: nameInput.value,
-                        email: emailInput.value
-                    });
-                }
-            }
-
-            return {
-                organizer: document.getElementById("organizer").value,
-                workshop: document.getElementById("workshop").value,
-                date: document.getElementById("date").value,
-                senderEmail: document.getElementById("email").value,
-                password: document.getElementById("password").value,
-                subject: document.getElementById("subject").value,
-                body: document.getElementById("body").value,
-                attendees: attendees
-            };
-        }
-
-        function showNotification(message) {
-            const notification = document.createElement('div');
-            notification.style.position = 'fixed';
-            notification.style.bottom = '20px';
-            notification.style.left = '50%';
-            notification.style.transform = 'translateX(-50%)';
-            notification.style.backgroundColor = 'var(--accent-light)';
-            notification.style.color = 'white';
-            notification.style.padding = '15px 25px';
-            notification.style.borderRadius = '50px';
-            notification.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.3)';
-            notification.style.zIndex = '1000';
-            notification.textContent = message;
-
-            document.body.appendChild(notification);
-
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 500);
-            }, 3000);
-        }
+        setTimeout(() => {
+          notification.style.opacity = "0";
+          setTimeout(() => {
+            document.body.removeChild(notification);
+          }, 500);
+        }, 3000);
+      }
     </script>
-</body>
-
+  </body>
 </html>
