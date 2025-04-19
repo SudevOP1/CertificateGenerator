@@ -17,8 +17,8 @@
         }
 
         .certificate-container {
-            width: 800px;
-            height: 550px;
+            width: 211.67mm;
+            height: 145.52mm;
             position: relative;
         }
 
@@ -29,7 +29,7 @@
             border-radius: 20px;
             padding: 40px;
             background-color: white;
-            background-image: url("./bg_img.png");
+            background-image: url("{{ bg_path }}");
             background-position: center;
             background-size: cover;
             position: relative;
@@ -150,23 +150,23 @@
 
                 <div class="body">
                     <div class="awarded-text">This Certificate is Awarded to</div>
-                    <div class="recipient-name">Vivian Lobo</div>
+                    <div class="recipient-name">{{ attendee_name }}</div>
                     <div class="participation-text">
                         for his/her active participation in
-                        <span class="workshop-name">Workshop Name</span>
+                        <span class="workshop-name">{{ workshop_name }}</span>
                     </div>
                 </div>
 
                 <div class="footer">
                     <div class="qr-code">
-                        <img style="width: 100px;" class="qr-symbol" src="./demo_qr.png" />
+                        <img style="width: 100px;" class="qr-symbol" src="{{ qr_path }}" />
                     </div>
 
                     <div class="badge">
-                        <img style="width: 100px;" src="./badge.png" />
+                        <img style="width: 100px;" src="{{ badge_path }}" />
                     </div>
 
-                    <div class="date">January 1, 2025</div>
+                    <div class="date">{{ date }}</div>
                 </div>
             </div>
         </div>

@@ -84,6 +84,7 @@ def send_emails(request):
             # save data in database
             new_workshop_obj = Workshop.objects.create(
                 organizer_name  = organizer_name,
+                organizer_email = sender_email,
                 workshop_name   = workshop_name,
                 date            = date,
                 emails_sent     = False,
@@ -163,7 +164,6 @@ def send_emails(request):
         
     return JsonResponse({"message": "Only POST requests allowed"}, status=405)
 
-#TODO
 @csrf_exempt
 def get_certificate(request):
     """

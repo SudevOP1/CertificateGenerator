@@ -3,6 +3,7 @@ import jinja2, pdfkit, os, base64
 base_path = os.path.dirname(os.path.abspath(__file__))
 template_file_name = "template.html"
 template_file_path = base_path  # path to the current folder
+bg_path = f"file:///{base_path}/bg_img.png".replace(os.sep, "/")
 
 pdfkit_exe_path = "C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe"
 
@@ -19,6 +20,7 @@ def get_pdf_file(organizer_name, workshop_name, date, qr, attendee_name, attende
         "workshop_name":    workshop_name,
         "date":             date,
         "qr_path":          qr,
+        "bg_path":          bg_path,
         "badge_path":       badge_path,
         "attendee_name":    attendee_name,
         "attendee_email":   attendee_email,
@@ -26,7 +28,22 @@ def get_pdf_file(organizer_name, workshop_name, date, qr, attendee_name, attende
 
     rendered_html = my_template.render(context)
     # creating pdf in memory:
-    pdf_bytes = pdfkit.from_string(rendered_html, False, configuration=config, options={'enable-local-file-access': None})
+    pdf_bytes = pdfkit.from_string(
+        rendered_html,
+        False,
+        configuration=config,
+        options={
+            'enable-local-file-access': None,
+            'margin-top': '0mm',
+            'margin-bottom': '0mm',
+            'margin-left': '0mm',
+            'margin-right': '0mm',
+            'page-width': '211.67mm',
+            'page-height': '145.52mm',
+            'dpi': 300,
+            'zoom': 1,
+        }
+    )
     # encoding pdf:
     encoded_pdf = base64.b64encode(pdf_bytes).decode('utf-8')
     return encoded_pdf

@@ -4,6 +4,7 @@ from django.db import models
 
 class Workshop(models.Model):
     organizer_name  = models.CharField(max_length=50)
+    organizer_email = models.EmailField()
     workshop_name   = models.CharField(max_length=50)
     date            = models.DateField()
     emails_sent     = models.BooleanField(default=False)
