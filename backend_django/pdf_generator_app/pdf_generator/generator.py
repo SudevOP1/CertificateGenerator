@@ -54,7 +54,7 @@ if __name__ == "__main__":
     organizer_name = "Smit Doshi"
     workshop_name = "Python in 69 Hours"
     date = "2025-01-25"
-    attendee_name = "John Doe"
+    attendee_name = "John 112222222111Doe"
     attendee_email = "johndoe@example.com"
     
     sample_qr_filename = "demo_qr.png"
