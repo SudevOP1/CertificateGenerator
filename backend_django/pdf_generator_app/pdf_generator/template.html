@@ -98,42 +98,55 @@
             font-weight: bold;
         }
 
+        /* Replace flexbox with table layout for better PDF rendering */
         .footer {
-            width: 90%;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            margin-bottom: 10px;
-            gap: 200px;
+            width: 100%;
+            margin-top: 50px;
+            display: table;
+            table-layout: fixed;
         }
 
-        .qr-code {
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .footer-row {
+            display: table-row;
+            padding: 10px 20px;
         }
 
+        .qr-code,
+        .date,
         .badge {
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 30px;
+            display: table-cell;
+            vertical-align: bottom;
+            width: 33.33%;
+            
+        }
+
+        .qr-code img,
+        .badge img {
+            width: 100px;
+            height: 100px;
+            border: 1px solid red;
+            /* display: block; */
         }
 
         .date {
-            width: 150px;
-            height: 20px;
+            text-align: center;
+        }
+
+        .date-content {
             font-size: 18px;
             font-weight: bold;
-            text-align: right;
+            display: inline-block;
             border-top: 2px solid black;
-            overflow: visible;
-            display: flex;
-            margin-top: 20px;
+            padding-top: 5px;
+            width: 100px;
+        }
+
+        .badge {
+            text-align: right;
+        }
+
+        .badge img {
+            margin-left: auto;
         }
     </style>
 </head>
@@ -158,9 +171,17 @@
                 </div>
 
                 <div class="footer">
-                    <img style="width: 100px;" class="qr-symbol" src="{{ qr_path }}" />
-                    <img style="width: 100px;" src="{{ badge_path }}" />
-                    <div class="date">{{ date }}</div>
+                    <div class="footer-row">
+                        <div class="qr-code">
+                            <img class="qr-symbol" src="{{ qr_path }}" />
+                        </div>
+                        <div class="badge">
+                            <img src="{{ badge_path }}" />
+                        </div>
+                        <div class="date">
+                            <div class="date-content">{{ date }}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

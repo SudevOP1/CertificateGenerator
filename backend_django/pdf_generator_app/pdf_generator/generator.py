@@ -4,7 +4,7 @@ base_path = os.path.dirname(os.path.abspath(__file__))
 template_file_name = "template.html"
 template_file_path = base_path  # path to the current folder
 bg_path = f"file:///{base_path}/bg_img.png".replace(os.sep, "/")
-
+    
 pdfkit_exe_path = "C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe"
 
 config = pdfkit.configuration(wkhtmltopdf=pdfkit_exe_path)
