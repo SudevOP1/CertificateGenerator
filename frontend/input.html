@@ -362,11 +362,7 @@
         <div class="form-group">
           <label for="date">Date</label>
           <div class="input-with-icon">
-            <input
-              id="date"
-              type="date"
-              class="form-control"
-            />
+            <input id="date" type="date" class="form-control" />
             <i class="fas fa-calendar"></i>
           </div>
         </div>
@@ -430,11 +426,7 @@
           </div>
 
           <div class="input-with-icon">
-            <input
-              id="password"
-              type="password"
-              class="form-control"
-            />
+            <input id="password" type="password" class="form-control" />
             <i class="fas fa-eye" id="togglePassword"></i>
           </div>
         </div>
@@ -522,7 +514,7 @@
 
         <button class="add-attendee" id="addAttendee">
           <i class="fas fa-plus-circle"></i>
-          <span style="margin-left: 10px;">Add Another Attendee</span>
+          <span style="margin-left: 10px">Add Another Attendee</span>
         </button>
 
         <!-- Buttons -->
@@ -562,7 +554,7 @@
         infoModal.style.display = "none";
         modalOverlay.style.display = "none";
       });
-      
+
       // Toggle password visibility
       document
         .getElementById("togglePassword")
@@ -630,14 +622,14 @@
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            "organizer_name": data.organizer,
-            "workshop_name": data.workshop,
-            "date": data.date, // yyyy-dd-mm
-            "attendees": data.attendees
+            organizer_name: data.organizer,
+            workshop_name: data.workshop,
+            date: data.date, // yyyy-dd-mm
+            attendees: data.attendees,
           }),
         });
 
-        if(response.ok) {
+        if (response.ok) {
           let responseData = await response.json();
           console.log("responseData:", responseData);
           demoCertificateEncoded = responseData.certificate;
@@ -647,25 +639,25 @@
       async function sendCertificates() {
         const data = getFormData();
         showNotification("Certificates are being sent to attendees!");
-        
+
         let response = await fetch(sendCertificatesUrl, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            "organizer_name"        : data.organizer,
-            "workshop_name"         : data.workshop,
-            "date"                  : data.date, // 2024-30-01
-            "attendees"             : data.attendees,
-            "sender_email"          : data.senderEmail,
-            "sender_email_password" : data.password,
-            "email_subject"         : data.subject,
-            "email_body"            : data.body,
+            organizer_name: data.organizer,
+            workshop_name: data.workshop,
+            date: data.date, // 2024-30-01
+            attendees: data.attendees,
+            sender_email: data.senderEmail,
+            sender_email_password: data.password,
+            email_subject: data.subject,
+            email_body: data.body,
           }),
         });
 
-        if(response.ok) {
+        if (response.ok) {
           let responseData = await response.json();
           console.log("responseData:", responseData);
         }

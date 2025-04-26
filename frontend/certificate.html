@@ -1,326 +1,352 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Certificate Generator</title>
-  <style>
-    :root {
-      --primary-bg: #04041B;
-      --secondary-bg: #370048;
-      --card-bg: #1b0033;
-      --input-bg: #4a0057;
-      --accent-dark: rgba(247, 40, 106, 1);
-      --accent-light: rgba(255, 247, 187, 1);
-      --text: #ffffff;
-      --shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Certificate Generator</title>
+    <style>
+      :root {
+        --primary-bg: #04041b;
+        --secondary-bg: #370048;
+        --card-bg: #1b0033;
+        --input-bg: #4a0057;
+        --accent-dark: rgba(247, 40, 106, 1);
+        --accent-light: rgba(255, 247, 187, 1);
+        --text: #ffffff;
+        --shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      transition: all 0.3s ease;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        transition: all 0.3s ease;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
 
-    body {
-      background: linear-gradient(135deg, var(--primary-bg), var(--secondary-bg));
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column; 
-      padding: 40px 20px;
-      text-align: center;
-    }
+      body {
+        background: linear-gradient(
+          135deg,
+          var(--primary-bg),
+          var(--secondary-bg)
+        );
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 40px 20px;
+        text-align: center;
+      }
 
-    .certificate {
-      background-color: var(--card-bg);
-      padding: 40px 30px;
-      border-radius: 20px;
-      box-shadow: var(--shadow);
-      max-width: 600px;
-      width: 100%;
-      margin-bottom: 30px; 
-      text-align: left;
-    }
+      .outermost-div {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+      }
 
-    .certificate h2 {
-      color: var(--accent-dark);
-      margin-bottom: 25px;
-      font-size: 2rem;
-    }
+      .certificate {
+        background-color: var(--card-bg);
+        padding: 40px 100px;
+        border-radius: 20px;
+        width: fit-content;
+        box-shadow: var(--shadow);
+        margin-bottom: 30px;
+        text-align: left;
+      }
 
-    .certificate p {
-      margin-bottom: 12px;
-      font-size: 1.2rem;
-    }
+      .certificate h2 {
+        color: var(--accent-dark);
+        margin-bottom: 25px;
+        font-size: 2rem;
+      }
 
-    .certificate strong {
-      color: var(--accent-light);
-    }
+      .certificate p {
+        margin-bottom: 12px;
+        font-size: 1.2rem;
+      }
 
-    .download-icon {
-      margin-top: 25px;
-      text-align: right;
-      font-size: 1.6rem;
-      color: var(--accent-light);
-      cursor: pointer;
-    }
+      .certificate strong {
+        color: var(--accent-light);
+      }
 
-    .pdf-viewer {
-      margin-top: 20px;
-      padding-left: 30px;
-      padding-right: 30px;
-      width: 100%;
-      max-width: calc(100% - 60px); 
-      text-align: center;
-    }
+      .download-icon {
+        margin-top: 25px;
+        text-align: right;
+        font-size: 1.6rem;
+        color: var(--accent-light);
+        cursor: pointer;
+      }
 
-    .pdf-viewer embed {
-      width: 100%;
-      height: 100vh;
-      border: 1px solid var(--accent-light);
-      border-radius: 10px;
-    }
-    
-    .error-message {
-      color: #ff4d4d;
-      padding: 10px;
-      border-radius: 5px;
-      margin-top: 15px;
-      background-color: rgba(255, 77, 77, 0.1);
-      font-weight: bold;
-    }
+      .pdf-viewer {
+        margin-top: 20px;
+        width: 100%;
+        max-width: calc(100% - 60px);
+        text-align: center;
+      }
 
-    .loading-indicator {
-      margin-top: 20px;
-      font-weight: bold;
-      color: var(--accent-light);
-    }
-  </style>
-</head>
-<body>
-  <div class="certificate">
-    <h2>This is a Verified Certificate ✅</h2>
-    <p><strong>Organizer:</strong> <span id="organizer">Loading...</span></p>
-    <p><strong>Organizer Email:</strong> <span id="organizerEmail">Loading...</span></p>
-    <p><strong>Workshop Name:</strong> <span id="workshopName">Loading...</span></p>
-    <p><strong>Attendee Name:</strong> <span id="attendeeName">Loading...</span></p>
-    <p><strong>Date:</strong> <span id="date">Loading...</span></p>
-    <p><strong>Certificate ID:</strong> <span id="certificateId">Loading...</span></p>
-    <div class="download-icon">
-      <img src="Icon.png" alt="Icon" width="30" height="30" id="downloadBtn" />
+      .pdf-viewer embed {
+        width: 100%;
+        height: 100vh;
+        border: 1px solid var(--accent-light);
+        border-radius: 10px;
+      }
+
+      .error-message {
+        color: #ff4d4d;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 15px;
+        background-color: rgba(255, 77, 77, 0.1);
+        font-weight: bold;
+      }
+
+      .loading-indicator {
+        margin-top: 20px;
+        font-weight: bold;
+        color: var(--accent-light);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="outermost-div">
+      <div class="certificate">
+        <h2>This is a Verified Certificate ✅</h2>
+        <p>
+          <strong>Organizer:</strong> <span id="organizer">Loading...</span>
+        </p>
+        <p>
+          <strong>Organizer Email:</strong>
+          <span id="organizerEmail">Loading...</span>
+        </p>
+        <p>
+          <strong>Workshop Name:</strong>
+          <span id="workshopName">Loading...</span>
+        </p>
+        <p>
+          <strong>Attendee Name:</strong>
+          <span id="attendeeName">Loading...</span>
+        </p>
+        <p><strong>Date:</strong> <span id="date">Loading...</span></p>
+        <p>
+          <strong>Certificate ID:</strong>
+          <span id="certificateId">Loading...</span>
+        </p>
+        <div class="download-icon">
+          <img
+            src="Icon.png"
+            alt="Icon"
+            width="30"
+            height="30"
+            id="downloadBtn"
+          />
+        </div>
+      </div>
+      <!-- PDF Viewer Section -->
+      <div class="pdf-viewer">
+        <embed
+          id="pdfEmbed"
+          width="100%"
+          height="100%"
+          type="application/pdf"
+        />
+      </div>
+      <div id="loadingIndicator" class="loading-indicator">
+        Loading certificate...
+      </div>
     </div>
-  </div>
 
-  <!-- PDF Viewer Section -->
-  <div class="pdf-viewer">
-    <embed id="pdfEmbed" width="100%" height="100%" type="application/pdf" />
-  </div>
+    <script>
+      let initialized = false;
 
-  <div id="loadingIndicator" class="loading-indicator">Loading certificate...</div>
-
-  <script>
-    // Flag to prevent multiple initializations
-    let initialized = false;
-    
-    // Function to safely get URL parameters without causing redirects
-    function getQueryParam(param) {
-      const queryString = window.location.search;
-      const urlParams = new URLSearchParams(queryString);
-      return urlParams.get(param);
-    }
-
-    // Get the certificate ID from URL parameters
-    const attendeeID = getQueryParam('id');
-    console.log("Certificate ID:", attendeeID);
-
-    const backendUrl = "http://127.0.0.1:8000/";
-    const getCertificateURL = backendUrl + "api/get-certificate/";
-    const getCertificateDetailsURL = backendUrl + "api/get-certificate-details/";
-    
-    let pdfData = null;
-
-    // Function to update certificate details in the DOM
-    function updateCertificateDetails(details) {
-      document.getElementById('organizer').textContent = details.organizer_name || 'N/A';
-      document.getElementById('organizerEmail').textContent = details.organizer_email || 'N/A';
-      document.getElementById('workshopName').textContent = details.workshop_name || 'N/A';
-      document.getElementById('attendeeName').textContent = details.name || 'N/A';
-      document.getElementById('date').textContent = details.date || 'N/A';
-      document.getElementById('certificateId').textContent = attendeeID || 'N/A';
-    }
-
-    // Function to display PDF in the viewer
-    function displayPDF(base64PDF) {
-      const pdfEmbed = document.getElementById('pdfEmbed');
-      // Convert base64 to data URL for the PDF
-      const pdfDataUrl = `data:application/pdf;base64,${base64PDF}`;
-      pdfEmbed.src = pdfDataUrl;
-      
-      // Store PDF data for download functionality
-      pdfData = base64PDF;
-      
-      // Hide loading indicator
-      document.getElementById('loadingIndicator').style.display = 'none';
-    }
-
-    // Function to handle download button click
-    function setupDownloadButton() {
-      const downloadBtn = document.getElementById('downloadBtn');
-      downloadBtn.addEventListener('click', function(e) {
-        e.preventDefault(); // Prevent any default behavior
-        
-        if (pdfData) {
-          const link = document.createElement('a');
-          link.href = `data:application/pdf;base64,${pdfData}`;
-          link.download = `certificate-${attendeeID}.pdf`;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        } else {
-          alert('Certificate is not loaded yet. Please wait.');
-        }
-        
-        return false; // Prevent event propagation
-      });
-    }
-
-    // Function to show error message
-    function showError(message) {
-      const loadingIndicator = document.getElementById('loadingIndicator');
-      loadingIndicator.style.display = 'none';
-      
-      const errorElement = document.createElement('div');
-      errorElement.className = 'error-message';
-      errorElement.textContent = message;
-      document.body.appendChild(errorElement);
-    }
-
-    // Fetch certificate data with error handling
-    async function getCertificate() {
-      try {
-        const response = await fetch(getCertificateURL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            "attendee_id": attendeeID,
-          }),
-          // Prevent caching issues
-          cache: 'no-store'
-        });
-
-        if (response.ok) {
-          const responseData = await response.json();
-          console.log("Certificate response:", responseData);
-          
-          if (responseData.message === "success" && responseData.certificate) {
-            displayPDF(responseData.certificate);
-          } else {
-            showError("Failed to load certificate PDF.");
-          }
-        } else {
-          showError(`Error fetching certificate: ${response.status} ${response.statusText}`);
-        }
-      } catch (error) {
-        console.error("Error fetching certificate:", error);
-        showError(`Network error: ${error.message}. Please check your connection.`);
+      // function to safely get URL parameters without causing redirects
+      function getQueryParam(param) {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        return urlParams.get(param);
       }
-    }
 
-    // Fetch certificate details with error handling
-    async function getCertificateDetails() {
-      try {
-        const response = await fetch(getCertificateDetailsURL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            "attendee_id": attendeeID,
-          }),
-          // Prevent caching issues
-          cache: 'no-store'
-        });
+      // get the certificate ID from URL parameters
+      const attendeeID = getQueryParam("id");
+      console.log("Certificate ID:", attendeeID);
 
-        if (response.ok) {
-          const responseData = await response.json();
-          console.log("Certificate details:", responseData);
-          
-          if (responseData.message === "success" && responseData.details) {
-            updateCertificateDetails(responseData.details);
-          } else {
-            showError("Failed to load certificate details.");
-          }
-        } else {
-          showError(`Error fetching certificate details: ${response.status} ${response.statusText}`);
-        }
-      } catch (error) {
-        console.error("Error fetching certificate details:", error);
-        showError(`Network error: ${error.message}. Please check your connection.`);
+      const backendUrl = "http://127.0.0.1:8000/";
+      const getCertificateURL = backendUrl + "api/get-certificate/";
+      const getCertificateDetailsURL =
+        backendUrl + "api/get-certificate-details/";
+
+      let pdfData = null;
+
+      // Function to update certificate details in the DOM
+      function updateCertificateDetails(details) {
+        document.getElementById("organizer").textContent =
+          details.organizer_name || "N/A";
+        document.getElementById("organizerEmail").textContent =
+          details.organizer_email || "N/A";
+        document.getElementById("workshopName").textContent =
+          details.workshop_name || "N/A";
+        document.getElementById("attendeeName").textContent =
+          details.name || "N/A";
+        document.getElementById("date").textContent = details.date || "N/A";
+        document.getElementById("certificateId").textContent =
+          attendeeID || "N/A";
       }
-    }
 
-    // Initialize everything safely
-    function initializePage() {
-      // Prevent multiple initializations
-      if (initialized) return;
-      initialized = true;
-      
-      console.log("Initializing certificate page...");
-      
-      if (attendeeID) {
-        // Set up download button functionality
-        setupDownloadButton();
-        
-        // Fetch data from API
-        getCertificate();
-        getCertificateDetails();
-      } else {
-        document.getElementById('loadingIndicator').style.display = 'none';
-        showError("No certificate ID provided in the URL.");
-        // Update UI to show error state
-        document.querySelectorAll('.certificate span').forEach(span => {
-          span.textContent = 'N/A - Missing ID';
-        });
+      function displayPDF(base64PDF) {
+        const pdfEmbed = document.getElementById("pdfEmbed");
+        const pdfDataUrl = `data:application/pdf;base64,${base64PDF}`;
+        pdfEmbed.src = pdfDataUrl;
+        pdfData = base64PDF;
+        document.getElementById("loadingIndicator").style.display = "none";
       }
-      
-      // Prevent form submissions
-      document.addEventListener('submit', function(e) {
-        e.preventDefault();
-        return false;
-      });
-      
-      // Prevent links from navigating
-      document.addEventListener('click', function(e) {
-        if (e.target.tagName === 'A' && !e.target.hasAttribute('download')) {
+
+      function setupDownloadButton() {
+        const downloadBtn = document.getElementById("downloadBtn");
+        downloadBtn.addEventListener("click", function (e) {
           e.preventDefault();
-        }
-      });
-    }
-
-    // Use a safe way to run initialization once the DOM is loaded
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initializePage);
-    } else {
-      initializePage();
-    }
-    
-    // Additional safeguard against window reload
-    window.onbeforeunload = function(e) {
-      // Only prevent reload if we've already initialized
-      if (initialized && !pdfData) {
-        // This will show a confirmation dialog in most browsers
-        const message = "Certificate is still loading. Are you sure you want to leave?";
-        e.returnValue = message;
-        return message;
+          if (pdfData) {
+            const link = document.createElement("a");
+            link.href = `data:application/pdf;base64,${pdfData}`;
+            link.download = `certificate-${attendeeID}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          } else {
+            alert("Certificate is not loaded yet. Please wait.");
+          }
+          return false;
+        });
       }
-    };
-  </script>
-</body>
+
+      function showError(message) {
+        const loadingIndicator = document.getElementById("loadingIndicator");
+        loadingIndicator.style.display = "none";
+        const errorElement = document.createElement("div");
+        errorElement.className = "error-message";
+        errorElement.textContent = message;
+        document.body.appendChild(errorElement);
+      }
+
+      async function getCertificate() {
+        try {
+          const response = await fetch(getCertificateURL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              attendee_id: attendeeID,
+            }),
+            cache: "no-store",
+          });
+
+          if (response.ok) {
+            const responseData = await response.json();
+            console.log("Certificate response:", responseData);
+
+            if (
+              responseData.message === "success" &&
+              responseData.certificate
+            ) {
+              displayPDF(responseData.certificate);
+            } else {
+              showError("Failed to load certificate PDF.");
+            }
+          } else {
+            showError(
+              `Error fetching certificate: ${response.status} ${response.statusText}`
+            );
+          }
+        } catch (error) {
+          console.error("Error fetching certificate:", error);
+          showError(
+            `Network error: ${error.message}. Please check your connection.`
+          );
+        }
+      }
+
+      async function getCertificateDetails() {
+        try {
+          const response = await fetch(getCertificateDetailsURL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              attendee_id: attendeeID,
+            }),
+            cache: "no-store",
+          });
+
+          if (response.ok) {
+            const responseData = await response.json();
+            console.log("Certificate details:", responseData);
+
+            if (responseData.message === "success" && responseData.details) {
+              updateCertificateDetails(responseData.details);
+            } else {
+              showError("Failed to load certificate details.");
+            }
+          } else {
+            showError(
+              `Error fetching certificate details: ${response.status} ${response.statusText}`
+            );
+          }
+        } catch (error) {
+          console.error("Error fetching certificate details:", error);
+          showError(
+            `Network error: ${error.message}. Please check your connection.`
+          );
+        }
+      }
+
+      function initializePage() {
+        if (initialized) return;
+        initialized = true;
+
+        console.log("Initializing certificate page...");
+
+        if (attendeeID) {
+          setupDownloadButton();
+          getCertificate();
+          getCertificateDetails();
+        } else {
+          document.getElementById("loadingIndicator").style.display = "none";
+          showError("No certificate ID provided in the URL.");
+          document.querySelectorAll(".certificate span").forEach((span) => {
+            span.textContent = "N/A - Missing ID";
+          });
+        }
+
+        document.addEventListener("submit", function (e) {
+          e.preventDefault();
+          return false;
+        });
+
+        document.addEventListener("click", function (e) {
+          if (e.target.tagName === "A" && !e.target.hasAttribute("download")) {
+            e.preventDefault();
+          }
+        });
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initializePage);
+      } else {
+        initializePage();
+      }
+
+      window.onbeforeunload = function (e) {
+        if (initialized && !pdfData) {
+          const message =
+            "Certificate is still loading. Are you sure you want to leave?";
+          e.returnValue = message;
+          return message;
+        }
+      };
+    </script>
+  </body>
 </html>
