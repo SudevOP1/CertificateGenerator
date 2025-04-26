@@ -626,6 +626,9 @@
 
         let response = await fetch(checkDemoUrl, {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify({
             "organizer_name": data.organizer,
             "workshop_name": data.workshop,
@@ -643,8 +646,29 @@
 
       async function sendCertificates() {
         const data = getFormData();
-        console.log("Sending Certificates with Data:", data);
         showNotification("Certificates are being sent to attendees!");
+        
+        let response = await fetch(sendCertificatesUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            "organizer_name"        : data.organizer,
+            "workshop_name"         : data.workshop,
+            "date"                  : data.date, // 2024-30-01
+            "attendees"             : data.attendees,
+            "sender_email"          : data.senderEmail,
+            "sender_email_password" : data.password,
+            "email_subject"         : data.subject,
+            "email_body"            : data.body,
+          }),
+        });
+
+        if(response.ok) {
+          let responseData = response.json();
+          console.log("responseData:", responseData);
+        }
       }
 
       function getFormData() {
