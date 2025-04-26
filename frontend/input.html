@@ -543,6 +543,10 @@
       const infoModal = document.getElementById("infoModal");
       const modalOverlay = document.getElementById("modalOverlay");
       const closeBtn = document.getElementById("closeBtn");
+      const backendUrl = "http://127.0.0.1:8000/";
+      const checkDemoUrl = backendUrl + "api/get-demo-certificate/";
+      const sendCertificatesUrl = backendUrl + "api/send-emails/";
+      let demoCertificateEncoded = "";
 
       infoBtn.addEventListener("click", () => {
         infoModal.style.display = "block";
@@ -558,6 +562,7 @@
         infoModal.style.display = "none";
         modalOverlay.style.display = "none";
       });
+      
       // Toggle password visibility
       document
         .getElementById("togglePassword")
@@ -615,13 +620,28 @@
           }
         });
 
-      function checkDemo() {
+      async function checkDemo() {
         const data = getFormData();
-        console.log("Demo Certificate Preview:", data);
         showNotification("Demo Certificate Data logged to console!");
+
+        let response = await fetch(checkDemoUrl, {
+          method: "POST",
+          body: JSON.stringify({
+            "organizer_name": data.organizer,
+            "workshop_name": data.workshop,
+            "date": data.date, // yyyy-dd-mm
+            "attendees": data.attendees
+          }),
+        });
+
+        if(response.ok) {
+          let responseData = response.json();
+          console.log("responseData:", responseData);
+          demoCertificateEncoded = responseData.certificate;
+        }
       }
 
-      function sendCertificates() {
+      async function sendCertificates() {
         const data = getFormData();
         console.log("Sending Certificates with Data:", data);
         showNotification("Certificates are being sent to attendees!");
