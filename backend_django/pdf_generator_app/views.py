@@ -7,7 +7,7 @@ from .models import *
 from email.message import EmailMessage
 
 demo_qr_path = f"file:///C{os.path.dirname(os.path.abspath(__file__)).replace("\\", "/")[1:]}/pdf_generator/demo_qr.png"
-frontend_website_url = "http://127.0.0.1:5500/frontend/certificate.html"
+frontend_website_url = "http://127.0.0.1:5500/certificate.html"
 
 @csrf_exempt
 def get_demo_certificate(request):
@@ -102,7 +102,7 @@ def send_emails(request):
             # generate QR imgs and save paths
             qr_paths = {}
             for attendee_obj in new_attendee_objs:
-                certificate_url = frontend_website_url + f"/certificate/{attendee_obj.id}"
+                certificate_url = frontend_website_url + f"?id={attendee_obj.id}"
                 qr_filename = f"output_{attendee_obj.id}.png"
                 qr_output_path = generate_qr(text=certificate_url, output_file_name=qr_filename)
                 qr_paths[attendee_obj.id] = qr_output_path
@@ -180,7 +180,7 @@ def get_certificate(request):
             workshop_obj = attendee_obj.workshop_id
 
             # generate QR img and save path
-            certificate_url = frontend_website_url + f"/certificate/{attendee_id}"
+            certificate_url = frontend_website_url + f"?id={attendee_id}"
             qr_filename = f"output_{attendee_id}.png"
             qr_output_path = generate_qr(text=certificate_url, output_file_name=qr_filename)
             

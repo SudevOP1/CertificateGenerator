@@ -638,7 +638,7 @@
         });
 
         if(response.ok) {
-          let responseData = response.json();
+          let responseData = await response.json();
           console.log("responseData:", responseData);
           demoCertificateEncoded = responseData.certificate;
         }
@@ -666,7 +666,7 @@
         });
 
         if(response.ok) {
-          let responseData = response.json();
+          let responseData = await response.json();
           console.log("responseData:", responseData);
         }
       }
