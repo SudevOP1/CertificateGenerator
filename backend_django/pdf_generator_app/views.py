@@ -9,7 +9,6 @@ from email.message import EmailMessage
 demo_qr_path = f"file:///C{os.path.dirname(os.path.abspath(__file__)).replace("\\", "/")[1:]}/pdf_generator/demo_qr.png"
 website_url = "http://127.0.0.1:8000"
 
-
 @csrf_exempt
 def get_demo_certificate(request):
     """
@@ -25,6 +24,7 @@ def get_demo_certificate(request):
     """
     if request.method == "POST":
         try:
+            # extracting data from request body
             body_data = json.loads(request.body)
             organizer_name = body_data["organizer_name"]
             workshop_name = body_data["workshop_name"]
@@ -32,6 +32,7 @@ def get_demo_certificate(request):
             attendees = body_data["attendees"]
             attendee = attendees[0]
 
+            # creating demo pdf
             pdf_base64 = get_pdf_file(
                 organizer_name=organizer_name,
                 workshop_name=workshop_name,
@@ -207,4 +208,37 @@ def get_certificate(request):
             if "qr_output_path" in locals() and os.path.exists(qr_output_path):
                 os.remove(qr_output_path)
         
+    return JsonResponse({"message": "Only POST requests allowed"}, status=405)
+
+@csrf_exempt
+def get_certificate_details(request):
+    """
+    POST body = {
+        "attendee_id": "24"
+    }
+    """
+    if request.method == "POST":
+        try:
+            # extract attendee_id from body
+            attendee_id = json.loads(request.body)["attendee_id"]
+            attendee_obj = Attendee.objects.get(id=attendee_id)
+            workshop_obj = attendee_obj.workshop_id
+
+            # get certificate details
+            details = {
+                "organizer_name" : workshop_obj.organizer_name, 
+                "organizer_email": workshop_obj.organizer_email,
+                "workshop_name"  : workshop_obj.workshop_name,  
+                "date"           : workshop_obj.date,           
+                "workshop_id"    : workshop_obj.id,
+                "name"           : attendee_obj.name,
+            }
+
+            return JsonResponse({
+                "message": "success",
+                "details": details
+            }, status=200)
+
+        except Exception as e:
+            return JsonResponse({"message": "something went wrong", "error": str(e)}, status=400)
     return JsonResponse({"message": "Only POST requests allowed"}, status=405)

@@ -17,4 +17,9 @@ urlpatterns = [
         get_certificate,
         name="get_certificate"
     ),
+    path(
+        "get-certificate-details/",
+        get_certificate_details,
+        name="get_certificate_details"
+    ),
 ]
