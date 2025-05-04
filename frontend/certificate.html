@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Certificate Generator</title>
+
     <style>
       :root {
         --primary-bg: #04041b;
@@ -80,6 +81,16 @@
         color: var(--accent-light);
         cursor: pointer;
       }
+      .download-icon img {
+        padding: 5px;
+        border-radius: 10px;
+      }
+      .download-icon img:hover {
+        background: #250343;
+      }
+      .download-icon img:active {
+        background: #5a1a92;
+      }
 
       .pdf-viewer {
         margin-top: 20px;
@@ -110,8 +121,10 @@
         color: var(--accent-light);
       }
     </style>
+
   </head>
   <body>
+
     <div class="outermost-div">
       <div class="certificate">
         <h2>This is a Verified Certificate ✅</h2>
@@ -139,8 +152,8 @@
           <img
             src="Icon.png"
             alt="Icon"
-            width="30"
-            height="30"
+            width="40"
+            height="40"
             id="downloadBtn"
           />
         </div>
@@ -348,5 +361,6 @@
         }
       };
     </script>
+
   </body>
 </html>

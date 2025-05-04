@@ -305,6 +305,31 @@
       .delete-attendee:hover {
         background-color: #c0392b;
       }
+
+      /* PDF Viewer Styles */
+      .pdf-viewer-container {
+        display: none;
+        margin-top: 30px;
+        width: 100%;
+        height: 600px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        border: 2px solid var(--accent-light);
+      }
+
+      .pdf-viewer {
+        width: 100%;
+        height: 100%;
+      }
+
+      .loading-indicator {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        color: var(--accent-light);
+        font-weight: 600;
+      }
     </style>
   </head>
 
@@ -395,7 +420,7 @@
           <div class="info-modal" id="infoModal">
             <button class="close-btn" id="closeBtn">Close</button>
             <p>
-              To send emails automatically from the backend, you’ll need to use
+              To send emails automatically from the backend, you'll need to use
               an App Password instead of your regular Gmail password. This keeps
               your account secure while allowing automated services to send
               emails on your behalf.
@@ -527,6 +552,19 @@
             Emails
           </button>
         </div>
+
+        <!-- PDF Viewer Section -->
+        <div id="pdfViewerContainer" class="pdf-viewer-container">
+          <embed
+            id="pdfEmbed"
+            src=""
+            type="application/pdf"
+            class="pdf-viewer"
+          />
+        </div>
+        <div id="loadingIndicator" class="loading-indicator">
+          Loading certificate preview...
+        </div>
       </div>
     </div>
 
@@ -538,6 +576,9 @@
       const backendUrl = "http://127.0.0.1:8000/";
       const checkDemoUrl = backendUrl + "api/get-demo-certificate/";
       const sendCertificatesUrl = backendUrl + "api/send-emails/";
+      const pdfViewerContainer = document.getElementById("pdfViewerContainer");
+      const loadingIndicator = document.getElementById("loadingIndicator");
+      const pdfEmbed = document.getElementById("pdfEmbed");
       let demoCertificateEncoded = "";
 
       infoBtn.addEventListener("click", () => {
@@ -554,6 +595,21 @@
         infoModal.style.display = "none";
         modalOverlay.style.display = "none";
       });
+
+      function displayPDF(base64PDF) {
+        // Set the data URL for the PDF
+        const pdfDataUrl = `data:application/pdf;base64,${base64PDF}`;
+        
+        // Set the src attribute of the embed element
+        pdfEmbed.src = pdfDataUrl;
+        
+        // Hide loading indicator and show PDF viewer
+        loadingIndicator.style.display = "none";
+        pdfViewerContainer.style.display = "block";
+        
+        // Scroll to the PDF viewer
+        pdfViewerContainer.scrollIntoView({ behavior: 'smooth' });
+      }
 
       // Toggle password visibility
       document
@@ -614,25 +670,45 @@
 
       async function checkDemo() {
         const data = getFormData();
-        showNotification("Demo Certificate Data logged to console!");
+        
+        // Show loading indicator and hide any previous PDF
+        loadingIndicator.style.display = "block";
+        pdfViewerContainer.style.display = "none";
+        
+        try {
+          let response = await fetch(checkDemoUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              organizer_name: data.organizer,
+              workshop_name: data.workshop,
+              date: data.date,
+              attendees: data.attendees,
+            }),
+          });
 
-        let response = await fetch(checkDemoUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            organizer_name: data.organizer,
-            workshop_name: data.workshop,
-            date: data.date, // yyyy-dd-mm
-            attendees: data.attendees,
-          }),
-        });
-
-        if (response.ok) {
-          let responseData = await response.json();
-          console.log("responseData:", responseData);
-          demoCertificateEncoded = responseData.certificate;
+          if (response.ok) {
+            let responseData = await response.json();
+            console.log("Demo certificate response:", responseData);
+            
+            if (responseData.message === "success" && responseData.certificate) {
+              demoCertificateEncoded = responseData.certificate;
+              displayPDF(demoCertificateEncoded);
+              showNotification("Demo certificate generated successfully!");
+            } else {
+              loadingIndicator.style.display = "none";
+              showNotification("Failed to generate demo certificate. Please check your inputs.");
+            }
+          } else {
+            loadingIndicator.style.display = "none";
+            showNotification("Error connecting to server. Please try again.");
+          }
+        } catch (error) {
+          console.error("Error in checkDemo:", error);
+          loadingIndicator.style.display = "none";
+          showNotification("Network error. Please check your connection.");
         }
       }
 
@@ -640,26 +716,34 @@
         const data = getFormData();
         showNotification("Certificates are being sent to attendees!");
 
-        let response = await fetch(sendCertificatesUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            organizer_name: data.organizer,
-            workshop_name: data.workshop,
-            date: data.date, // 2024-30-01
-            attendees: data.attendees,
-            sender_email: data.senderEmail,
-            sender_email_password: data.password,
-            email_subject: data.subject,
-            email_body: data.body,
-          }),
-        });
+        try {
+          let response = await fetch(sendCertificatesUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              organizer_name: data.organizer,
+              workshop_name: data.workshop,
+              date: data.date,
+              attendees: data.attendees,
+              sender_email: data.senderEmail,
+              sender_email_password: data.password,
+              email_subject: data.subject,
+              email_body: data.body,
+            }),
+          });
 
-        if (response.ok) {
-          let responseData = await response.json();
-          console.log("responseData:", responseData);
+          if (response.ok) {
+            let responseData = await response.json();
+            console.log("Send certificates response:", responseData);
+            showNotification("Certificates sent successfully!");
+          } else {
+            showNotification("Failed to send certificates. Please check your inputs.");
+          }
+        } catch (error) {
+          console.error("Error in sendCertificates:", error);
+          showNotification("Network error. Please check your connection.");
         }
       }
 
@@ -698,7 +782,7 @@
         notification.style.bottom = "20px";
         notification.style.left = "50%";
         notification.style.transform = "translateX(-50%)";
-        notification.style.backgroundColor = "var(--accent-light)";
+        notification.style.backgroundColor = "var(--accent-dark)";
         notification.style.color = "white";
         notification.style.padding = "15px 25px";
         notification.style.borderRadius = "50px";
