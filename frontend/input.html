@@ -118,11 +118,21 @@
       }
 
       .form-group {
-        margin-bottom: 18px;
         position: relative;
       }
 
+      .form-group-mb {
+        position: relative;
+        margin-bottom: 18px;
+      }
+
       .form-group label {
+        display: block;
+        font-weight: 500;
+        font-size: 14px;
+        color: var(--accent-light);
+      }
+      .form-group-mb label {
         display: block;
         margin-bottom: 8px;
         font-weight: 500;
@@ -364,7 +374,7 @@
         </div>
         <div class="divider"></div>
 
-        <div class="form-group">
+        <div class="form-group-mb">
           <label for="organizer">Organizer</label>
           <input
             id="organizer"
@@ -374,7 +384,7 @@
           />
         </div>
 
-        <div class="form-group">
+        <div class="form-group-mb">
           <label for="workshop">Workshop Name</label>
           <input
             id="workshop"
@@ -384,7 +394,7 @@
           />
         </div>
 
-        <div class="form-group">
+        <div class="form-group-mb">
           <label for="date">Date</label>
           <div class="input-with-icon">
             <input id="date" type="date" class="form-control" />
@@ -392,7 +402,7 @@
           </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group-mb">
           <label for="email">Sender Email</label>
           <input
             id="email"
@@ -402,7 +412,7 @@
           />
         </div>
 
-        <div class="form-group">
+        <div class="form-group-mb">
           <div style="display: flex; align-items: flex-start; gap: 10px">
             <label for="password">App Password</label>
             <i
@@ -456,7 +466,7 @@
           </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group-mb">
           <label for="subject">Subject</label>
           <input
             id="subject"
@@ -466,7 +476,7 @@
           />
         </div>
 
-        <div class="form-group">
+        <div class="form-group-mb">
           <label for="body">Body</label>
           <textarea
             id="body"
@@ -484,10 +494,25 @@
         <div class="divider"></div>
 
         <div id="attendees-container">
-          <div class="attendee-row">
+          <!-- Add header row with labels -->
+          <div class="attendee-row" style="margin-bottom: 10px;">
             <div class="attendee-col">
               <div class="form-group">
                 <label>Attendee Name</label>
+              </div>
+            </div>
+            <div class="attendee-col">
+              <div class="form-group">
+                <label>Attendee Email</label>
+              </div>
+            </div>
+            <div style="width: 50px;"></div> <!-- Spacer for alignment with delete buttons -->
+          </div>
+          
+          <!-- Existing attendee rows remain the same -->
+          <div class="attendee-row">
+            <div class="attendee-col">
+              <div class="form-group">
                 <input
                   id="name1"
                   type="text"
@@ -498,7 +523,6 @@
             </div>
             <div class="attendee-col">
               <div class="form-group">
-                <label>Attendee Email</label>
                 <input
                   id="email1"
                   type="email"
@@ -509,11 +533,10 @@
             </div>
             <button class="delete-attendee">Delete</button>
           </div>
-
+        
           <div class="attendee-row">
             <div class="attendee-col">
               <div class="form-group">
-                <label>Attendee Name</label>
                 <input
                   id="name2"
                   type="text"
@@ -524,7 +547,6 @@
             </div>
             <div class="attendee-col">
               <div class="form-group">
-                <label>Attendee Email</label>
                 <input
                   id="email2"
                   type="email"
@@ -638,7 +660,6 @@
           newRow.innerHTML = `
                 <div class="attendee-col">
                     <div class="form-group">
-                        <label>Attendee Name</label>
                         <input id="name${
                           countRows + 1
                         }" type="text" class="form-control" placeholder="Attendee's Name">
@@ -646,7 +667,6 @@
                 </div>
                 <div class="attendee-col">
                     <div class="form-group">
-                        <label>Attendee Email</label>
                         <input id="email${
                           countRows + 1
                         }" type="email" class="form-control" placeholder="attendee@example.com">
@@ -659,14 +679,15 @@
         });
 
       // delete attendee
-      document
-        .getElementById("attendees-container")
-        .addEventListener("click", function (e) {
-          if (e.target && e.target.classList.contains("delete-attendee")) {
-            const row = e.target.closest(".attendee-row");
-            if (row) row.remove();
+      document.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('delete-attendee')) {
+          const row = e.target.closest('.attendee-row');
+          // Don't delete the header row with labels
+          if (row && !row.querySelector('label')) {
+            row.remove();
           }
-        });
+        }
+      });
 
       async function checkDemo() {
         const data = getFormData();
