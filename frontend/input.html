@@ -347,6 +347,7 @@
     <div>
       <h1>Certificate Generator</h1>
 
+      <!-- headings -->
       <div
         style="
           width: 80%;
@@ -368,224 +369,220 @@
 
       <div class="container">
         <!-- Event Details -->
-        <div class="section-title">
-          <i class="fas fa-calendar-alt"></i>
-          Event Details
-        </div>
-        <div class="divider"></div>
-
-        <div class="form-group-mb">
-          <label for="organizer">Organizer</label>
-          <input
-            id="organizer"
-            type="text"
-            class="form-control"
-            placeholder="Organizer's Name"
-          />
-        </div>
-
-        <div class="form-group-mb">
-          <label for="workshop">Workshop Name</label>
-          <input
-            id="workshop"
-            type="text"
-            class="form-control"
-            placeholder="Workshop Name"
-          />
-        </div>
-
-        <div class="form-group-mb">
-          <label for="date">Date</label>
-          <div class="input-with-icon">
-            <input id="date" type="date" class="form-control" />
-            <i class="fas fa-calendar"></i>
+        <div>
+          <div class="section-title">
+            <i class="fas fa-calendar-alt"></i>
+            Event Details
           </div>
-        </div>
-
-        <div class="form-group-mb">
-          <label for="email">Sender Email</label>
-          <input
-            id="email"
-            type="email"
-            class="form-control"
-            placeholder="sender@gmail.com"
-          />
-        </div>
-
-        <div class="form-group-mb">
-          <div style="display: flex; align-items: flex-start; gap: 10px">
-            <label for="password">App Password</label>
-            <i
-              class="fa fa-info-circle"
-              aria-hidden="true"
-              id="infoBtn"
-              style="cursor: pointer"
-              placeholder="abcd abcd abcd abcd"
-            ></i>
+          <div class="divider"></div>
+          <div class="form-group-mb">
+            <label for="organizer">Organizer</label>
+            <input
+              id="organizer"
+              type="text"
+              class="form-control"
+              placeholder="Organizer's Name"
+            />
           </div>
-
-          <div class="modal-overlay" id="modalOverlay"></div>
-
-          <!-- Info Modal -->
-          <div class="info-modal" id="infoModal">
-            <button class="close-btn" id="closeBtn">Close</button>
-            <p>
-              To send emails automatically from the backend, you'll need to use
-              an App Password instead of your regular Gmail password. This keeps
-              your account secure while allowing automated services to send
-              emails on your behalf.
-            </p>
-            <p><strong>Steps:</strong></p>
-            <ol>
-              <li style="font-size: 15px">
-                Make sure 2-Step Verification is turned ON on your Gmail
-                Account.
-              </li>
-              <li style="font-size: 15px">
-                Go to
-                <a href="https://myaccount.google.com/security" target="_blank"
-                  >https://myaccount.google.com/security</a
-                >
-              </li>
-              <li style="font-size: 15px">
-                Generate an app password called
-                <strong>"Workshop Email Sender"</strong>.
-              </li>
-              <li style="font-size: 15px">
-                Google will generate a secure 16-digit password.
-              </li>
-              <li style="font-size: 15px">
-                Copy this password and paste it here as it is.
-              </li>
-            </ol>
+          <div class="form-group-mb">
+            <label for="workshop">Workshop Name</label>
+            <input
+              id="workshop"
+              type="text"
+              class="form-control"
+              placeholder="Workshop Name"
+            />
           </div>
-
-          <div class="input-with-icon">
-            <input id="password" type="password" class="form-control" />
-            <i class="fas fa-eye" id="togglePassword"></i>
+          <div class="form-group-mb">
+            <label for="date">Date</label>
+            <div class="input-with-icon">
+              <input id="date" type="date" class="form-control" />
+              <i class="fas fa-calendar"></i>
+            </div>
           </div>
-        </div>
-
-        <div class="form-group-mb">
-          <label for="subject">Subject</label>
-          <input
-            id="subject"
-            type="text"
-            placeholder="Subject of the email"
-            class="form-control"
-          />
-        </div>
-
-        <div class="form-group-mb">
-          <label for="body">Body</label>
-          <textarea
-            id="body"
-            rows="3"
-            placeholder="This will contain the body of the email."
-            class="form-control"
-          ></textarea>
+          <div class="form-group-mb">
+            <label for="email">Sender Email</label>
+            <input
+              id="email"
+              type="email"
+              class="form-control"
+              placeholder="sender@gmail.com"
+            />
+          </div>
+          <div class="form-group-mb">
+            <div style="display: flex; align-items: flex-start; gap: 10px">
+              <label for="password">App Password</label>
+              <i
+                class="fa fa-info-circle"
+                aria-hidden="true"
+                id="infoBtn"
+                style="cursor: pointer"
+                placeholder="abcd abcd abcd abcd"
+              ></i>
+            </div>
+            <div class="modal-overlay" id="modalOverlay"></div>
+            <!-- Info Modal -->
+            <div class="info-modal" id="infoModal">
+              <button class="close-btn" id="closeBtn">Close</button>
+              <p>
+                To send emails automatically from the backend, you'll need to use
+                an App Password instead of your regular Gmail password. This keeps
+                your account secure while allowing automated services to send
+                emails on your behalf.
+              </p>
+              <p><strong>Steps:</strong></p>
+              <ol>
+                <li style="font-size: 15px">
+                  Make sure 2-Step Verification is turned ON on your Gmail
+                  Account.
+                </li>
+                <li style="font-size: 15px">
+                  Go to
+                  <a href="https://myaccount.google.com/security" target="_blank"
+                    >https://myaccount.google.com/security</a
+                  >
+                </li>
+                <li style="font-size: 15px">
+                  Generate an app password called
+                  <strong>"Workshop Email Sender"</strong>.
+                </li>
+                <li style="font-size: 15px">
+                  Google will generate a secure 16-digit password.
+                </li>
+                <li style="font-size: 15px">
+                  Copy this password and paste it here as it is.
+                </li>
+              </ol>
+            </div>
+            <div class="input-with-icon">
+              <input id="password" type="password" class="form-control" />
+              <i class="fas fa-eye" id="togglePassword"></i>
+            </div>
+          </div>
+          <div class="form-group-mb">
+            <label for="subject">Subject</label>
+            <input
+              id="subject"
+              type="text"
+              placeholder="Subject of the email"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group-mb">
+            <label for="body">Body</label>
+            <textarea
+              id="body"
+              rows="3"
+              placeholder="This will contain the body of the email."
+              class="form-control"
+            ></textarea>
+          </div>
         </div>
 
         <!-- Attendee Details -->
-        <div class="section-title">
-          <i class="fas fa-users"></i>
-          Attendee Details
-        </div>
-        <div class="divider"></div>
-
-        <div id="attendees-container">
-          <!-- Add header row with labels -->
-          <div class="attendee-row" style="margin-bottom: 10px;">
-            <div class="attendee-col">
-              <div class="form-group">
-                <label>Attendee Name</label>
-              </div>
-            </div>
-            <div class="attendee-col">
-              <div class="form-group">
-                <label>Attendee Email</label>
-              </div>
-            </div>
-            <div style="width: 50px;"></div> <!-- Spacer for alignment with delete buttons -->
+        <div>
+          <div class="section-title">
+            <i class="fas fa-users"></i>
+            Attendee Details
           </div>
+          <div class="divider"></div>
+
+          <div id="attendees-container">
+            <!-- Add header row with labels -->
+            <div class="attendee-row" style="margin-bottom: 10px;">
+              <div class="attendee-col">
+                <div class="form-group">
+                  <label>Attendee Name</label>
+                </div>
+              </div>
+              <div class="attendee-col">
+                <div class="form-group">
+                  <label>Attendee Email</label>
+                </div>
+              </div>
+              <div style="width: 50px;"></div> <!-- Spacer for alignment with delete buttons -->
+            </div>
           
-          <!-- Existing attendee rows remain the same -->
-          <div class="attendee-row">
-            <div class="attendee-col">
-              <div class="form-group">
-                <input
-                  id="name1"
-                  type="text"
-                  class="form-control"
-                  placeholder="Attendee's Name"
-                />
+            <!-- Existing attendee rows remain the same -->
+            <div class="attendee-row">
+              <div class="attendee-col">
+                <div class="form-group">
+                  <input
+                    id="name1"
+                    type="text"
+                    class="form-control"
+                    placeholder="Attendee's Name"
+                  />
+                </div>
               </div>
-            </div>
-            <div class="attendee-col">
-              <div class="form-group">
-                <input
-                  id="email1"
-                  type="email"
-                  class="form-control"
-                  placeholder="attendee@example.com"
-                />
+              <div class="attendee-col">
+                <div class="form-group">
+                  <input
+                    id="email1"
+                    type="email"
+                    class="form-control"
+                    placeholder="attendee@example.com"
+                  />
+                </div>
               </div>
+              <button class="delete-attendee">Delete</button>
             </div>
-            <button class="delete-attendee">Delete</button>
+          
+            <div class="attendee-row">
+              <div class="attendee-col">
+                <div class="form-group">
+                  <input
+                    id="name2"
+                    type="text"
+                    class="form-control"
+                    placeholder="Attendee's Name"
+                  />
+                </div>
+              </div>
+              <div class="attendee-col">
+                <div class="form-group">
+                  <input
+                    id="email2"
+                    type="email"
+                    class="form-control"
+                    placeholder="attendee@example.com"
+                  />
+                </div>
+              </div>
+              <button class="delete-attendee">Delete</button>
+            </div>
           </div>
-        
-          <div class="attendee-row">
-            <div class="attendee-col">
-              <div class="form-group">
-                <input
-                  id="name2"
-                  type="text"
-                  class="form-control"
-                  placeholder="Attendee's Name"
-                />
-              </div>
-            </div>
-            <div class="attendee-col">
-              <div class="form-group">
-                <input
-                  id="email2"
-                  type="email"
-                  class="form-control"
-                  placeholder="attendee@example.com"
-                />
-              </div>
-            </div>
-            <button class="delete-attendee">Delete</button>
-          </div>
-        </div>
 
-        <button class="add-attendee" id="addAttendee">
-          <i class="fas fa-plus-circle"></i>
-          <span style="margin-left: 10px">Add Another Attendee</span>
-        </button>
+          <button class="add-attendee" id="addAttendee">
+            <i class="fas fa-plus-circle"></i>
+            <span style="margin-left: 10px">Add Another Attendee</span>
+          </button>
+        </div>
 
         <!-- Buttons -->
         <div class="btn-group">
           <button onclick="checkDemo()" class="btn">
             <i class="fas fa-eye"></i> Check Demo Certificate
           </button>
-          <button onclick="sendCertificates()" class="btn">
+          <button onclick="sendCertificates()" class="btn" id="sendBtn" style="display: none;">
             <i class="fas fa-paper-plane"></i> Send Certificates to Attendee
             Emails
           </button>
         </div>
 
         <!-- PDF Viewer Section -->
-        <div id="pdfViewerContainer" class="pdf-viewer-container">
-          <embed
-            id="pdfEmbed"
-            src=""
-            type="application/pdf"
-            class="pdf-viewer"
-          />
-        </div>
-        <div id="loadingIndicator" class="loading-indicator">
-          Loading certificate preview...
+        <div>
+          <div id="pdfViewerContainer" class="pdf-viewer-container">
+            <embed
+              id="pdfEmbed"
+              src=""
+              type="application/pdf"
+              class="pdf-viewer"
+            />
+          </div>
+          <div id="loadingIndicator" class="loading-indicator">
+            Loading certificate preview...
+          </div>
         </div>
       </div>
     </div>
@@ -601,6 +598,8 @@
       const pdfViewerContainer = document.getElementById("pdfViewerContainer");
       const loadingIndicator = document.getElementById("loadingIndicator");
       const pdfEmbed = document.getElementById("pdfEmbed");
+      const sendBtn = document.getElementById("sendBtn");
+
       let demoCertificateEncoded = "";
 
       infoBtn.addEventListener("click", () => {
@@ -718,6 +717,7 @@
               demoCertificateEncoded = responseData.certificate;
               displayPDF(demoCertificateEncoded);
               showNotification("Demo certificate generated successfully!");
+              sendBtn.style.display = "block"
             } else {
               loadingIndicator.style.display = "none";
               showNotification("Failed to generate demo certificate. Please check your inputs.");
