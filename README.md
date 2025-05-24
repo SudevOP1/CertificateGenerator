@@ -1,7 +1,9 @@
 # Certificate Generator
 
-This is my Semester 4 Python mini project". It is a Django-based web application that generates personalized digital certificates for event participants.<br>
-The app takes user input, adds details to a certificate template, and emails the certificate to recipients. It also includes a QR code for verification.<br>
+This is my Semester 4 Python mini project".<br>
+It is a Django-based web application that generates personalized digital certificates for event participants.<br>
+The app takes user input, adds details to a certificate template, and emails the certificate to recipients.<br>
+It also includes a QR code for verification.<br>
 <br>
 
 ## 💡 What it does
@@ -18,6 +20,10 @@ The app takes user input, adds details to a certificate template, and emails the
 - **Frontend**: `Html`, `CSS`, `Javascript`
 - **Backend**: `Django`
 - **Libraries Used**: `jinja2`, `pdfkit`, `qrcode`
+<br>
+
+## ✨ Website Design
+![Example](https://raw.githubusercontent.com/SudevOP1/CertificateGenerator/main/Implementation.png)<br>
 <br>
 
 ## 🚀 How to run it locally
@@ -44,7 +50,3 @@ code .
 Use the `Live Server` extnesion to run `input.html`
 ### 5. See the magic happen
 Open `http://127.0.0.1:5500/input.html` in your browser<br>
-<br>
-
-## ✨ Website Design
-![Example](https://raw.githubusercontent.com/SudevOP1/CertificateGenerator/main/Implementation.png)
