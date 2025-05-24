@@ -1,3 +1,3 @@
-# python-mini-project
+# Certificate Generator
 
 Sem 4 Python Mini Project
