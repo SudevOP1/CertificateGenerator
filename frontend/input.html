@@ -8,16 +8,18 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       rel="stylesheet"
     />
+    <script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
     <style>
       :root {
         --primary-bg: #04041b;
         --secondary-bg: #370048;
         --card-bg: #1b0033;
         --input-bg: #4a0057;
-        --accent-dark: rgba(247, 40, 106, 1);
-        --accent-light: rgba(255, 247, 187, 1);
+        --lighter-purple: #620073;
+        --accent-dark: #f7286a;
+        --accent-light: #fff7bb;
         --text: #ffffff;
-        --shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        --shadow: 0 10px 20px #0000004d;
       }
 
       * {
@@ -47,7 +49,7 @@
         margin: 0px auto;
         background-color: var(--card-bg);
         border-radius: 24px;
-        padding: 40px;
+        padding: 15px 40px 30px;
         box-shadow: var(--shadow);
         animation: fadeIn 0.5s ease;
       }
@@ -340,6 +342,73 @@
         color: var(--accent-light);
         font-weight: 600;
       }
+
+      .toggle-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        background: var(--input-bg);
+        border-radius: 1000px;
+        padding: 5px;
+        width: 100%;
+        height: fit-content;
+        margin-bottom: 15px;
+        gap: 5px;
+      }
+      .toggle-container p {
+        color: var(--accent-light);
+        border: none;
+        flex: 1;
+        text-align: center;
+        cursor: pointer;
+        background: var(--input-bg);
+        padding: 5px;
+        border-radius: 1000px;
+      }
+      #manually {
+        background: var(--lighter-purple);
+        font-weight: bold;
+      }
+
+      .form-group-mb-horizontal {
+        display: flex;
+        flex-direction: row;
+      }
+      .form-group-mb-horizontal label {
+        min-width: 40%;
+        align-self: center;
+        color: var(--accent-light);
+        font-size: 14px;
+        font-weight: bold;
+      }
+      .form-group-mb-horizontal input {
+        flex: 1;
+        padding: 6px 9px;
+        margin-top: 7px;
+      }
+      .excel-input {
+        margin-bottom: 35px;
+        display: none;
+      }
+      .drag-and-drop-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--input-bg);
+        border: 2px dashed var(--accent-light);
+        border-radius: 1000px;
+        padding: 10px;
+        color: var(--accent-light);
+        width: 100%;
+        cursor: pointer;
+        text-align: center;
+        font-size: 16px;
+        margin-bottom: 5px;
+      }
+      .drag-and-drop-input {
+        display: none;
+      }
     </style>
   </head>
 
@@ -417,7 +486,7 @@
                 aria-hidden="true"
                 id="infoBtn"
                 style="cursor: pointer"
-                placeholder="abcd abcd abcd abcd"
+                placeholder="xxxx-xxxx-xxxx-xxxx"
               ></i>
             </div>
             <div class="modal-overlay" id="modalOverlay"></div>
@@ -425,10 +494,10 @@
             <div class="info-modal" id="infoModal">
               <button class="close-btn" id="closeBtn">Close</button>
               <p>
-                To send emails automatically from the backend, you'll need to use
-                an App Password instead of your regular Gmail password. This keeps
-                your account secure while allowing automated services to send
-                emails on your behalf.
+                To send emails automatically from the backend, you'll need to
+                use an App Password instead of your regular Gmail password. This
+                keeps your account secure while allowing automated services to
+                send emails on your behalf.
               </p>
               <p><strong>Steps:</strong></p>
               <ol>
@@ -438,7 +507,9 @@
                 </li>
                 <li style="font-size: 15px">
                   Go to
-                  <a href="https://myaccount.google.com/security" target="_blank"
+                  <a
+                    href="https://myaccount.google.com/security"
+                    target="_blank"
                     >https://myaccount.google.com/security</a
                   >
                 </li>
@@ -487,9 +558,82 @@
           </div>
           <div class="divider"></div>
 
+          <div class="toggle-container" id="toggle-container">
+            <p id="manually" onclick="setManualEntry()">Enter Manually</p>
+            <p id="fromExcel" onclick="setExcelEntry()">
+              Enter From Excel File
+            </p>
+          </div>
+
+          <!-- excel input -->
+          <div class="excel-input" id="excel-input">
+            <label for="excelUpload" class="drag-and-drop-label">
+              Choose / Drag and Drop Excel File
+              <input
+                id="excelUpload"
+                type="file"
+                accept=".xls,.xlsx"
+                class="drag-and-drop-input"
+              />
+            </label>
+
+            <div class="horizontal-inputs">
+              <div class="form-group-mb-horizontal">
+                <label for="attendeeNamesFromCell"
+                  >Attendee Names From Cell</label
+                >
+                <input
+                  id="attendeeNamesFromCell"
+                  type="text"
+                  placeholder="A2"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group-mb-horizontal">
+                <label for="attendeeNamesToCell">Attendee Names To Cell</label>
+                <input
+                  id="attendeeNamesToCell"
+                  type="text"
+                  placeholder="A5"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group-mb-horizontal">
+                <label for="attendeeEmailsFromCell"
+                  >Attendee Emails From Cell</label
+                >
+                <input
+                  id="attendeeEmailsFromCell"
+                  type="text"
+                  placeholder="B2"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group-mb-horizontal">
+                <label for="attendeeEmailsToCell"
+                  >Attendee Emails To Cell</label
+                >
+                <input
+                  id="attendeeEmailsToCell"
+                  type="text"
+                  placeholder="B5"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <button
+              class="add-attendee"
+              style="margin-top: 15px"
+              onclick="getAttendeeListFromExcel()"
+            >
+              Fetch Attendee List From Excel
+            </button>
+          </div>
+
+          <!-- manual input -->
           <div id="attendees-container">
             <!-- Add header row with labels -->
-            <div class="attendee-row" style="margin-bottom: 10px;">
+            <div class="attendee-row" style="margin-bottom: 10px">
               <div class="attendee-col">
                 <div class="form-group">
                   <label>Attendee Name</label>
@@ -500,10 +644,9 @@
                   <label>Attendee Email</label>
                 </div>
               </div>
-              <div style="width: 50px;"></div> <!-- Spacer for alignment with delete buttons -->
+              <div style="width: 50px"></div>
+              <!-- Spacer for alignment with delete buttons -->
             </div>
-          
-            <!-- Existing attendee rows remain the same -->
             <div class="attendee-row">
               <div class="attendee-col">
                 <div class="form-group">
@@ -527,7 +670,7 @@
               </div>
               <button class="delete-attendee">Delete</button>
             </div>
-          
+
             <div class="attendee-row">
               <div class="attendee-col">
                 <div class="form-group">
@@ -551,12 +694,12 @@
               </div>
               <button class="delete-attendee">Delete</button>
             </div>
-          </div>
 
-          <button class="add-attendee" id="addAttendee">
-            <i class="fas fa-plus-circle"></i>
-            <span style="margin-left: 10px">Add Another Attendee</span>
-          </button>
+            <button class="add-attendee" id="addAttendee">
+              <i class="fas fa-plus-circle"></i>
+              <span style="margin-left: 10px">Add Another Attendee</span>
+            </button>
+          </div>
         </div>
 
         <!-- Buttons -->
@@ -564,7 +707,12 @@
           <button onclick="checkDemo()" class="btn">
             <i class="fas fa-eye"></i> Check Demo Certificate
           </button>
-          <button onclick="sendCertificates()" class="btn" id="sendBtn" style="display: none;">
+          <button
+            onclick="sendCertificates()"
+            class="btn"
+            id="sendBtn"
+            style="display: none"
+          >
             <i class="fas fa-paper-plane"></i> Send Certificates to Attendee
             Emails
           </button>
@@ -588,19 +736,25 @@
     </div>
 
     <script>
+      let demoCertificateEncoded = "";
+      const backendUrl = "http://127.0.0.1:8000/";
+      const checkDemoUrl = backendUrl + "api/get-demo-certificate/";
+      const sendCertificatesUrl = backendUrl + "api/send-emails/";
       const infoBtn = document.getElementById("infoBtn");
       const infoModal = document.getElementById("infoModal");
       const modalOverlay = document.getElementById("modalOverlay");
       const closeBtn = document.getElementById("closeBtn");
-      const backendUrl = "http://127.0.0.1:8000/";
-      const checkDemoUrl = backendUrl + "api/get-demo-certificate/";
-      const sendCertificatesUrl = backendUrl + "api/send-emails/";
       const pdfViewerContainer = document.getElementById("pdfViewerContainer");
       const loadingIndicator = document.getElementById("loadingIndicator");
       const pdfEmbed = document.getElementById("pdfEmbed");
       const sendBtn = document.getElementById("sendBtn");
-
-      let demoCertificateEncoded = "";
+      const excelUpload = document.getElementById("excelUpload");
+      const attendeeNamesFromCell = document.getElementById("attendeeNamesFromCell");
+      const attendeeNamesToCell = document.getElementById("attendeeNamesToCell");
+      const attendeeEmailsFromCell = document.getElementById("attendeeEmailsFromCell");
+      const attendeeEmailsToCell = document.getElementById("attendeeEmailsToCell");
+      const dragLabel = document.querySelector(".drag-and-drop-label");
+      const excelInput = document.getElementById("excelUpload");
 
       infoBtn.addEventListener("click", () => {
         infoModal.style.display = "block";
@@ -617,19 +771,70 @@
         modalOverlay.style.display = "none";
       });
 
+      excelInput.addEventListener("change", () => {
+        if (excelInput.files.length > 0) {
+          dragLabel.textContent = excelInput.files[0].name;
+        }
+      });
+
+      dragLabel.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dragLabel.style.borderColor = "white";
+      });
+
+      dragLabel.addEventListener("dragleave", () => {
+        e.preventDefault();
+        dragLabel.style.borderColor = "";
+      });
+
+      dragLabel.addEventListener("drop", (e) => {
+        e.preventDefault();
+        const file = e.dataTransfer.files[0];
+        if (file) {
+          excelInput.files = e.dataTransfer.files;
+          dragLabel.textContent = file.name;
+        }
+      });
+
+      function setExcelEntry() {
+        document.getElementById("excel-input").style.display = "block";
+        document.getElementById("attendees-container").style.display = "none";
+
+        const fromExcel = document.getElementById("fromExcel");
+        fromExcel.style.background = "var(--lighter-purple)";
+        fromExcel.style.fontWeight = "bold";
+
+        const manually = document.getElementById("manually");
+        manually.style.background = "var(--input-bg)";
+        manually.style.fontWeight = "normal";
+      }
+
+      function setManualEntry() {
+        document.getElementById("excel-input").style.display = "none";
+        document.getElementById("attendees-container").style.display = "block";
+
+        const manually = document.getElementById("manually");
+        manually.style.background = "var(--lighter-purple)";
+        manually.style.fontWeight = "bold";
+
+        const fromExcel = document.getElementById("fromExcel");
+        fromExcel.style.background = "var(--input-bg)";
+        fromExcel.style.fontWeight = "normal";
+      }
+
       function displayPDF(base64PDF) {
         // Set the data URL for the PDF
         const pdfDataUrl = `data:application/pdf;base64,${base64PDF}`;
-        
+
         // Set the src attribute of the embed element
         pdfEmbed.src = pdfDataUrl;
-        
+
         // Hide loading indicator and show PDF viewer
         loadingIndicator.style.display = "none";
         pdfViewerContainer.style.display = "block";
-        
+
         // Scroll to the PDF viewer
-        pdfViewerContainer.scrollIntoView({ behavior: 'smooth' });
+        pdfViewerContainer.scrollIntoView({ behavior: "smooth" });
       }
 
       // Toggle password visibility
@@ -678,95 +883,15 @@
         });
 
       // delete attendee
-      document.addEventListener('click', function(e) {
-        if (e.target && e.target.classList.contains('delete-attendee')) {
-          const row = e.target.closest('.attendee-row');
+      document.addEventListener("click", function (e) {
+        if (e.target && e.target.classList.contains("delete-attendee")) {
+          const row = e.target.closest(".attendee-row");
           // Don't delete the header row with labels
-          if (row && !row.querySelector('label')) {
+          if (row && !row.querySelector("label")) {
             row.remove();
           }
         }
       });
-
-      async function checkDemo() {
-        const data = getFormData();
-        
-        // Show loading indicator and hide any previous PDF
-        loadingIndicator.style.display = "block";
-        pdfViewerContainer.style.display = "none";
-        
-        try {
-          let response = await fetch(checkDemoUrl, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              organizer_name: data.organizer,
-              workshop_name: data.workshop,
-              date: data.date,
-              attendees: data.attendees,
-            }),
-          });
-
-          if (response.ok) {
-            let responseData = await response.json();
-            console.log("Demo certificate response:", responseData);
-            
-            if (responseData.message === "success" && responseData.certificate) {
-              demoCertificateEncoded = responseData.certificate;
-              displayPDF(demoCertificateEncoded);
-              showNotification("Demo certificate generated successfully!");
-              sendBtn.style.display = "block"
-            } else {
-              loadingIndicator.style.display = "none";
-              showNotification("Failed to generate demo certificate. Please check your inputs.");
-            }
-          } else {
-            loadingIndicator.style.display = "none";
-            showNotification("Error connecting to server. Please try again.");
-          }
-        } catch (error) {
-          console.error("Error in checkDemo:", error);
-          loadingIndicator.style.display = "none";
-          showNotification("Network error. Please check your connection.");
-        }
-      }
-
-      async function sendCertificates() {
-        const data = getFormData();
-        showNotification("Certificates are being sent to attendees!");
-
-        try {
-          let response = await fetch(sendCertificatesUrl, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              organizer_name: data.organizer,
-              workshop_name: data.workshop,
-              date: data.date,
-              attendees: data.attendees,
-              sender_email: data.senderEmail,
-              sender_email_password: data.password,
-              email_subject: data.subject,
-              email_body: data.body,
-            }),
-          });
-
-          if (response.ok) {
-            let responseData = await response.json();
-            console.log("Send certificates response:", responseData);
-            showNotification("Certificates sent successfully!");
-          } else {
-            showNotification("Failed to send certificates. Please check your inputs.");
-          }
-        } catch (error) {
-          console.error("Error in sendCertificates:", error);
-          showNotification("Network error. Please check your connection.");
-        }
-      }
 
       function getFormData() {
         const container = document.getElementById("attendees-container");
@@ -820,6 +945,223 @@
           }, 500);
         }, 3000);
       }
+
+      async function checkDemo() {
+        const data = getFormData();
+
+        // Show loading indicator and hide any previous PDF
+        loadingIndicator.style.display = "block";
+        pdfViewerContainer.style.display = "none";
+
+        try {
+          let response = await fetch(checkDemoUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              organizer_name: data.organizer,
+              workshop_name: data.workshop,
+              date: data.date,
+              attendees: data.attendees,
+            }),
+          });
+
+          if (response.ok) {
+            let responseData = await response.json();
+            console.log("Demo certificate response:", responseData);
+
+            if (
+              responseData.message === "success" &&
+              responseData.certificate
+            ) {
+              demoCertificateEncoded = responseData.certificate;
+              displayPDF(demoCertificateEncoded);
+              showNotification("Demo certificate generated successfully!");
+              sendBtn.style.display = "block";
+            } else {
+              loadingIndicator.style.display = "none";
+              showNotification(
+                "Failed to generate demo certificate. Please check your inputs."
+              );
+            }
+          } else {
+            loadingIndicator.style.display = "none";
+            showNotification("Error connecting to server. Please try again.");
+          }
+        } catch (error) {
+          console.error("Error in checkDemo:", error);
+          loadingIndicator.style.display = "none";
+          showNotification("Network error. Please check your connection.");
+        }
+      }
+
+      async function sendCertificates() {
+        const data = getFormData();
+        showNotification("Certificates are being sent to attendees!");
+
+        try {
+          let response = await fetch(sendCertificatesUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              organizer_name: data.organizer,
+              workshop_name: data.workshop,
+              date: data.date,
+              attendees: data.attendees,
+              sender_email: data.senderEmail,
+              sender_email_password: data.password,
+              email_subject: data.subject,
+              email_body: data.body,
+            }),
+          });
+
+          if (response.ok) {
+            let responseData = await response.json();
+            console.log("Send certificates response:", responseData);
+            showNotification("Certificates sent successfully!");
+          } else {
+            showNotification(
+              "Failed to send certificates. Please check your inputs."
+            );
+          }
+        } catch (error) {
+          console.error("Error in sendCertificates:", error);
+          showNotification("Network error. Please check your connection.");
+        }
+      }
+
+      async function getAttendeeListFromExcel() {
+        const file = excelUpload.files[0];
+
+        if (!file) {
+          showNotification("Please select an Excel file first");
+          return;
+        }
+
+        // get cell range inputs
+        const namesFromCell = attendeeNamesFromCell.value.trim();
+        const namesToCell = attendeeNamesToCell.value.trim();
+        const emailsFromCell = attendeeEmailsFromCell.value.trim();
+        const emailsToCell = attendeeEmailsToCell.value.trim();
+
+        if (
+          !namesFromCell ||
+          !namesToCell ||
+          !emailsFromCell ||
+          !emailsToCell
+        ) {
+          showNotification("Please fill all the cell range fields");
+          return;
+        }
+
+        try {
+          // Read the Excel file
+          const rows = await readXlsxFile(file);
+          // console.log(rows);
+          const parseCell = (cellRef) => {
+            const match = cellRef.match(/^([A-Z]+)(\d+)$/);
+            if (!match) throw new Error(`Invalid cell reference: ${cellRef}`);
+            const col =
+              match[1]
+                .split("")
+                .reduce(
+                  (result, char) =>
+                    result * 26 + (char.charCodeAt(0) - "A".charCodeAt(0) + 1),
+                  0
+                ) - 1;
+            const row = parseInt(match[2]) - 1;
+            return { row, col };
+          };
+
+          const namesFrom = parseCell(namesFromCell);
+          const namesTo = parseCell(namesToCell);
+          const emailsFrom = parseCell(emailsFromCell);
+          const emailsTo = parseCell(emailsToCell);
+
+          if (namesFrom.row > namesTo.row || emailsFrom.row > emailsTo.row) {
+            showNotification(
+              'Invalid range: "From" cell should come before "To" cell'
+            );
+            return;
+          }
+          if (namesTo.row - namesFrom.row !== emailsTo.row - emailsFrom.row) {
+            showNotification(
+              "Name and email ranges must have the same number of rows"
+            );
+            return;
+          }
+          const attendees = [];
+          for (let i = namesFrom.row; i <= namesTo.row; i++) {
+            const emailRowIndex = emailsFrom.row + (i - namesFrom.row);
+
+            if (rows[i] && rows[emailRowIndex]) {
+              const name = rows[i][namesFrom.col];
+              const email = rows[emailRowIndex][emailsFrom.col];
+
+              if (name && email) {
+                attendees.push({
+                  name: String(name).trim(),
+                  email: String(email).trim(),
+                });
+              }
+            }
+          }
+
+          if (attendees.length === 0) {
+            showNotification("No attendee data found in the specified range");
+            return;
+          }
+
+          // clear existing attendee rows (except header and add button)
+          const container = document.getElementById("attendees-container");
+          const existingRows = container.querySelectorAll(".attendee-row");
+          const addButton = document.getElementById("addAttendee");
+
+          existingRows.forEach((row, index) => {
+            if (index > 0) {
+              // skip header row
+              row.remove();
+            }
+          });
+
+          // add new attendee rows before the add button
+          attendees.forEach((attendee, index) => {
+            const newRow = document.createElement("div");
+            newRow.className = "attendee-row";
+            newRow.innerHTML = `
+    <div class="attendee-col">
+      <div class="form-group">
+        <input id="name${index + 1}" type="text" class="form-control"
+              placeholder="Attendee's Name" value="${attendee.name}">
+      </div>
+    </div>
+    <div class="attendee-col">
+      <div class="form-group">
+        <input id="email${index + 1}" type="email" class="form-control"
+              placeholder="attendee@example.com" value="${attendee.email}">
+      </div>
+    </div>
+    <button class="delete-attendee">Delete</button>
+  `;
+            container.insertBefore(newRow, addButton);
+          });
+
+          showNotification(
+            `Successfully loaded ${attendees.length} attendees from Excel file`
+          );
+
+          setManualEntry();
+        } catch (error) {
+          console.error("Error reading Excel file:", error);
+          showNotification(
+            "Error reading Excel file. Please check the file format and cell references."
+          );
+        }
+      }
+    
     </script>
   </body>
 </html>
