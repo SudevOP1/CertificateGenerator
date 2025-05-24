@@ -1,2 +1,0 @@
-pip install jinja2 pdfkit django qrcode
-https://wkhtmltopdf.org/downloads.html
