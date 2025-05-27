@@ -1,6 +1,6 @@
 # Certificate Generator
 
-This is my Semester 4 Python mini project".<br>
+This is my Semester 4 Python mini project.<br>
 It is a Django-based web application that generates personalized digital certificates for event participants.<br>
 The app takes user input, adds details to a certificate template, and emails the certificate to recipients.<br>
 It also includes a QR code for verification.<br>
